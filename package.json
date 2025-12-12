@@ -16,10 +16,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx @tailwindcss/cli -i ./src/css/input.css -o ./src/css/output.css --watch"
+    "dev": "npx @tailwindcss/cli -i ./src/css/input.css -o ./src/css/output.css --watch",
+    "prettier": "npm install -D prettier prettier-plugin-tailwindcss",
+    "add": "npm install tailwindcss @tailwindcss/cli"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.17",
-    "tailwindcss": "^4.1.17"
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2"
   }
 }

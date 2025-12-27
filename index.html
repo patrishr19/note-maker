@@ -10,47 +10,127 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="./src/css/output.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Pixelify+Sans:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Stack+Sans+Text:wght@200..700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
   <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
 </head>
 <body>
-    <nav class="relative bg-zinc-700 z-2">
-        <div class="mx-auto px-2 sm:px-6 lg:px-8">
-            <div class="relative flex items-center justify-between h-16">
-                <div class="flex flex-1 items-center justify-start ml-2 sm:ml-0 sm:items-stretch sm:justify-start">
-                    <div class="flex shrink-0 items-center">
-                        <span class="font-sans font-normal sm:font-medium text-white text-xl sm:text-lg w-auto select-none">Note Maker</span>
+    <div class="h-screen flex flex-col overflow-hidden bg-zinc-800">
+        <nav class="relative bg-zinc-700 z-2">
+            <div class="mx-auto px-2 sm:px-6 lg:px-8">
+                <div class="relative flex items-center justify-between h-16">
+                    <div class="flex flex-1 items-center justify-start ml-2 sm:ml-0 sm:items-stretch sm:justify-start">
+                        <div class="flex shrink-0 items-center">
+                            <span class="font-sans font-normal sm:font-medium text-white text-xl sm:text-lg w-auto select-none">Note Maker</span>
+                        </div>
+                        <div class="hidden sm:ml-6 sm:block">
+                            <div class="flex space-x-4">
+                                <a href="index.html" aria-current="page" class="font-sans rounded-md bg-gray-950/25 px-3 py-2 text-sm font-medium text-white">Home</a>
+                                <a href="pinned.html" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Pinned</a>
+                                <a href="archive.html" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Archive</a>
+                                <a href="archive.html" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Concepts</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="hidden sm:ml-6 sm:block">
-                        <div class="flex space-x-4">
-                            <a href="#" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Home</a>
-                            <a href="#" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Pinned</a>
-                            <a href="#" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Archive</a>
+                    <div class="text-white absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:ml-6 sm:pr-0">
+                        
+                        <button type="button" class="relative rounded-full px-1 py-1 sm:px-2 text-gray-400 cursor-pointer inline-flex items-center sm:bg-zinc-600 gap-1 sm:inset-ring inset-ring-zinc-800/75 select-none bg-transparent ring-0">
+                            <span class="absolute sm:hidden -inset-1.5"></span>
+                            <svg class="size-6 sm:size-4 stroke-1 -ml-0.5 sm:stroke-2 sm:stroke-gray-300 stroke-[#ffffff]"xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <span class="font-sans text-xs/4 text-gray-300 hidden sm:block">Ctrl + K</span>
+                        </button>
+
+
+                        <div class="relative ml-3 select-none">
+                            <button class="relative flex rounded-full cursor-pointer">
+                                <span class="absolute -inset-1.5"></span>
+                                <span class="sr-only"></span>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010" alt="Profile Picture" class="size-8 rounded-full bg-gray-800 ">
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="text-white absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:ml-6 sm:pr-0">
-                    
-                    <button type="button" class="relative rounded-full px-1 py-1 sm:px-2 text-gray-400 cursor-pointer inline-flex items-center sm:bg-zinc-400 gap-1 sm:inset-ring inset-ring-zinc-800/50 select-none bg-transparent ring-0">
-                        <span class="absolute sm:hidden -inset-1.5"></span>
-                        <svg class="size-6 sm:size-4 stroke-1 -ml-0.5 sm:stroke-2 sm:stroke-gray-300 stroke-[#ffffff]"xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <span class="font-sans text-xs/4 text-gray-300 hidden sm:block">Ctrl + K</span>
-                    </button>
-
-
-                    <div class="relative ml-3 select-none">
-                        <button class="relative flex rounded-full cursor-pointer">
-                            <span class="absolute -inset-1.5"></span>
-                            <span class="sr-only"></span>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010" alt="Profile Picture" class="size-8 rounded-full bg-gray-800 ">
-                        </button>
-                    </div>
-                </div>
             </div>
-        </div>
-    </nav>
-    <div class="h-screen bg-zinc-800 relative">
-        <div class="fixed z-1 left-0 inset-y-0 bg-zinc-700 w-16 sm:hidden" id="mobile-sidebar"></div>
+        </nav>
 
+        <div class="flex flex-1 overflow-hidden">
+            <!-- SIDEBAR region-->
+             <div class="w-16 bg-zinc-700 sm:hidden flex flex-col items-center py-4 space-y-4">
+                <a aria-current="page" class="relative rounded-xl p-2 text-white bg-gray-950/25" href="index.html">
+                    <svg class="size-8 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg>
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">Home</span>
+                </a>
+
+                <a class="relative rounded-xl p-2 text-zinc-400" href="pinned.html">
+                    <svg class="size-8 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">Pinned</span>
+                </a>
+
+                <a class="relative rounded-xl p-2 text-zinc-400" href="archive.html">
+                    <svg class="size-8 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 13H15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 6.5C3 6.03534 3 5.80302 3.03843 5.60982C3.19624 4.81644 3.81644 4.19624 4.60982 4.03843C4.80302 4 5.03534 4 5.5 4H12H18.5C18.9647 4 19.197 4 19.3902 4.03843C20.1836 4.19624 20.8038 4.81644 20.9616 5.60982C21 5.80302 21 6.03534 21 6.5V6.5V6.5C21 6.96466 21 7.19698 20.9616 7.39018C20.8038 8.18356 20.1836 8.80376 19.3902 8.96157C19.197 9 18.9647 9 18.5 9H12H5.5C5.03534 9 4.80302 9 4.60982 8.96157C3.81644 8.80376 3.19624 8.18356 3.03843 7.39018C3 7.19698 3 6.96466 3 6.5V6.5V6.5Z" stroke-width="2" stroke-linejoin="round"></path> <path d="M4 9V15.9999C4 17.8856 4 18.8284 4.58579 19.4142C5.17157 19.9999 6.11438 19.9999 8 19.9999H9H15H16C17.8856 19.9999 18.8284 19.9999 19.4142 19.4142C20 18.8284 20 17.8856 20 15.9999V9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">Archive</span>
+                </a>
+
+                <a class="relative rounded-xl p-2 text-zinc-400" href="archive.html">
+                    <svg class="size-8 stroke-current fill-current" viewBox="0 0 24 24" id="Outline" xmlns="http://www.w3.org/2000/svg" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>194 restore</title> <path d="M12,6a1,1,0,0,0-1,1v5a1,1,0,0,0,.293.707l3,3a1,1,0,0,0,1.414-1.414L13,11.586V7A1,1,0,0,0,12,6Z M23.812,10.132A12,12,0,0,0,3.578,3.415V1a1,1,0,0,0-2,0V5a2,2,0,0,0,2,2h4a1,1,0,0,0,0-2H4.827a9.99,9.99,0,1,1-2.835,7.878A.982.982,0,0,0,1,12a1.007,1.007,0,0,0-1,1.1,12,12,0,1,0,23.808-2.969Z"></path></g></svg>
+                    <span class="absolute -inset-1.5"></span>
+                    <span class="sr-only">Concepts</span>
+                </a>
+             </div>
+             <!-- CONTENT -->
+             <div class="flex-1 overflow-y-auto p-3" id="contentContainer">
+                <!-- Pinned notes collapse -->
+                <div id="pinnedHr" class="flex items-center gap-1 my-2 group">
+                    <div class="h-px bg-zinc-600 w-1/18"></div>
+                    <div class="flex items-center gap-1 text-zinc-500">
+                        <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
+                        <span class="text-lg font-sans select-none">Pinned</span>
+                    </div>
+                    <div class="h-px bg-zinc-600 flex-1"></div>
+                    <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all">
+                        <svg class="size-10 stroke-current fill-current" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
+                    </button>
+                </div>
+                <!-- Pinned Notes -->
+                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                 </div>
+                <!-- Recent notes collapse -->
+                 <div id="recentHr" class="flex items-center gap-1 my-2 group">
+                    <div class="h-px bg-zinc-600 w-1/18"></div>
+                    <div class="flex items-center gap-1 text-zinc-500">
+                        <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 6V12" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16.24 16.24L12 12" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                        <span class="text-lg font-sans select-none">Recent</span>
+                    </div>
+                    <div class="h-px bg-zinc-600 flex-1"></div>
+                    <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all">
+                        <svg class="size-10 stroke-current fill-current" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
+                    </button>
+                </div>
+                <!-- Recent Notes -->
+                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                 </div>
+             </div>
+        </div>
     </div>
+
+
 </body>
 </html>

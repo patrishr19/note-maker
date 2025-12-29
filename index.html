@@ -5,10 +5,13 @@
     https://saasykit.com/tools/tailwindcss-color-scheme-generator - charcoal-depths
 -->
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note maker</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script type="module" src="./src/js/"></script>
   <link href="./src/css/output.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,6 +86,12 @@
              </div>
              <!-- CONTENT -->
              <div class="flex-1 overflow-y-auto p-3" id="contentContainer">
+                <!-- Create Field -->
+                 <div id="createField" class="hidden sm:block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
+                    <div class="flex flex-col p-2">
+                        <input type="text" placeholder="Create a note" name="noteTitle" class="bg-transparent outline-none border-non font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light">
+                    </div>
+                 </div>
                 <!-- Pinned notes collapse -->
                 <div id="pinnedHr" class="flex items-center gap-1 my-2 group">
                     <div class="h-px bg-zinc-600 w-1/18"></div>
@@ -229,7 +238,12 @@
              </div>
         </div>
     </div>
-
+    <button class="fixed sm:hidden bottom-6 right-6 z-50 bg-zinc-600 text-white/80 rounded-2xl p-2 inset-shadow-lg cursor-pointer">
+        <svg class="size-10 stroke-current group-hover:stroke-white transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 12H20M12 4V20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="sr-only">New Note</span>
+    </button>
 
 </body>
 </html>

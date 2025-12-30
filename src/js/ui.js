@@ -53,3 +53,47 @@ export function setNoteMode() {
     $("#noteTypeSwitch").addClass('bg-emerald-300/70');
     $("#taskDeadlineText").addClass('note-hidden');
 }
+
+export function openCreateModal(){
+    $('#createField').appendTo('#mobileCreate');
+
+    $('#mobileModal').removeClass('opacity-0 pointer-events-none').addClass('opacity-100 pointer-events-auto');
+    $('#mobileCreate').removeClass('opacity-0 scale-95').addClass('opacity-100 scale-100');
+
+    $('body').removeClass('overflow-y-auto');
+    $('body').addClass('overflow-y-hidden');
+
+    expandEditor();
+}
+
+export function closeCreateModal(){
+    $('#createField').appendTo('#desktopCreate');
+
+    $('#mobileModal').removeClass('opacity-100 pointer-events-auto').addClass('opacity-0 pointer-events-none');
+    $('#mobileCreate').removeClass('opacity-100 scale-100').addClass('opacity-0 scale-95');
+
+    $('#contentContainer').addClass('overflow-y-auto');
+    $('#contentContainer').removeClass('overflow-y-hidden');
+
+    collapseEditor();
+}
+
+export function expandPinned() {
+    $('#pinnedNotes').removeClass('hidden');
+    $('#collapsePinned svg').removeClass('rotate-180').addClass('rotate-0');
+}
+
+export function collapsePinned() {
+    $('#pinnedNotes').addClass('hidden');
+    $('#collapsePinned svg').removeClass('rotate-0').addClass('rotate-180');
+}
+
+export function expandRecent() {
+    $('#recentNotes').removeClass('hidden');
+    $('#collapseRecent svg').removeClass('rotate-180').addClass('rotate-0');
+}
+
+export function collapseRecent() {
+    $('#recentNotes').addClass('hidden');
+    $('#collapseRecent svg').removeClass('rotate-0').addClass('rotate-180');
+}

@@ -11,7 +11,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Note maker</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script type="module" src="./src/js/"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+  <script type="module" src="./src/js/main.js"></script>
   <link href="./src/css/output.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +36,6 @@
                                 <a href="index.html" aria-current="page" class="font-sans rounded-md bg-gray-950/25 px-3 py-2 text-sm font-medium text-white">Home</a>
                                 <a href="pinned.html" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Pinned</a>
                                 <a href="archive.html" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Archive</a>
-                                <a href="archive.html" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Concepts</a>
                             </div>
                         </div>
                     </div>
@@ -58,7 +61,7 @@
         </nav>
 
         <div class="flex flex-1 overflow-hidden">
-            <!-- SIDEBAR region-->
+            <!-- SIDEBAR-->
              <div class="w-16 bg-zinc-700 sm:hidden flex flex-col items-center py-4 space-y-4">
                 <a aria-current="page" class="relative rounded-xl p-2 text-white bg-gray-950/25" href="index.html">
                     <svg class="size-8 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg>
@@ -77,21 +80,30 @@
                     <span class="absolute -inset-1.5"></span>
                     <span class="sr-only">Archive</span>
                 </a>
-
-                <a class="relative rounded-xl p-2 text-zinc-400" href="archive.html">
-                    <svg class="size-8 stroke-current fill-current" viewBox="0 0 24 24" id="Outline" xmlns="http://www.w3.org/2000/svg" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><title>194 restore</title> <path d="M12,6a1,1,0,0,0-1,1v5a1,1,0,0,0,.293.707l3,3a1,1,0,0,0,1.414-1.414L13,11.586V7A1,1,0,0,0,12,6Z M23.812,10.132A12,12,0,0,0,3.578,3.415V1a1,1,0,0,0-2,0V5a2,2,0,0,0,2,2h4a1,1,0,0,0,0-2H4.827a9.99,9.99,0,1,1-2.835,7.878A.982.982,0,0,0,1,12a1.007,1.007,0,0,0-1,1.1,12,12,0,1,0,23.808-2.969Z"></path></g></svg>
-                    <span class="absolute -inset-1.5"></span>
-                    <span class="sr-only">Concepts</span>
-                </a>
              </div>
              <!-- CONTENT -->
              <div class="flex-1 overflow-y-auto p-3" id="contentContainer">
-                <!-- Create Field -->
-                 <div id="createField" class="hidden sm:block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
-                    <div class="flex flex-col p-2">
-                        <input type="text" placeholder="Create a note" name="noteTitle" class="bg-transparent outline-none border-non font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light">
+                <!-- desktop create -->
+                <div id="desktopCreate" class="hidden sm:block mx-auto max-w-lg">
+                    <!-- Create Field -->
+                    <div id="createField" class="block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
+                        <div class="flex flex-col p-2 gap-1">
+                            <span class="flex">
+                                <input id="noteTitle" type="text" placeholder="Create a note" name="noteTitle" class="flex-1 bg-transparent outline-none border-non font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light placeholder:select-none">
+                                <button id="noteTypeSwitch" class="transition-all cursor-pointer px-2 py-1 bg-emerald-300/70 rounded-md text-white/80 font-medium select-none hover:scale-110 note-hidden">Note</button>
+                            </span>
+                            <div id="editorContainer" class="text-white min-h-11 note-hidden"></div>
+                            <div id="dateSubDiv" class="flex items-center note-hidden">
+                                <div class="px-3 text-white/60 font-light font-openSans note-hidden" id="taskDeadlineText">
+                                    <span class="select-none">Set Deadline:</span>
+                                    <input type="datetime-local" class="border-none outline-none w-48 select-none cursor-pointer" id="taskDeadline" name="taskDeadline">
+                                </div>
+                                <button id="noteSubmit" type="submit" class="p-1 w-1/6 ml-auto text-white/60 font-openSans font-light cursor-pointer hover:bg-zinc-700/30 rounded-md note-hidden select-none">Save</button>
+                            </div>
+                            <input type="hidden" id="noteType" value="note" name="noteType">
+                        </div>
                     </div>
-                 </div>
+                </div>
                 <!-- Pinned notes collapse -->
                 <div id="pinnedHr" class="flex items-center gap-1 my-2 group">
                     <div class="h-px bg-zinc-600 w-1/18"></div>
@@ -100,12 +112,12 @@
                         <span class="text-lg font-sans select-none">Pinned</span>
                     </div>
                     <div class="h-px bg-zinc-600 flex-1"></div>
-                    <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all">
-                        <svg class="size-10 stroke-current fill-current" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
+                    <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all" id="collapsePinned">
+                        <svg class="size-10 stroke-current fill-current transition-all" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
                     </button>
                 </div>
                 <!-- Pinned Notes -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 select-none">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 select-none" id="pinnedNotes">
                     <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
                         <div class="flex flex-1 flex-col min-w-0">
                             <!-- upper section -->
@@ -221,12 +233,12 @@
                         <span class="text-lg font-sans select-none">Recent</span>
                     </div>
                     <div class="h-px bg-zinc-600 flex-1"></div>
-                    <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all">
-                        <svg class="size-10 stroke-current fill-current" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
+                    <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all" id="collapseRecent">
+                        <svg class="size-10 stroke-current fill-current transition-all" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
                     </button>
                 </div>
                 <!-- Recent Notes -->
-                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="recentNotes">
                     <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
                     <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
                     <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
@@ -238,12 +250,15 @@
              </div>
         </div>
     </div>
-    <button class="fixed sm:hidden bottom-6 right-6 z-50 bg-zinc-600 text-white/80 rounded-2xl p-2 inset-shadow-lg cursor-pointer">
-        <svg class="size-10 stroke-current group-hover:stroke-white transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <button class="fixed sm:hidden bottom-6 right-6 z-50 bg-zinc-600 text-white/80 rounded-2xl p-2 inset-shadow-lg cursor-pointer" id="modalToggleButton">
+        <svg class="select-none size-10 stroke-current group-hover:stroke-white transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4 12H20M12 4V20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span class="sr-only">New Note</span>
     </button>
-
+    <!-- mobile create modal -->
+    <div id="mobileModal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-md sm:hidden transition-all duration-300 ease-in-out opacity-0 pointer-events-none">
+        <div class="w-full transition-all duration-300 transform scale-95 opacity-0" id="mobileCreate"></div>
+    </div>
 </body>
 </html>

@@ -21,13 +21,19 @@
 
 #editorContainer{
     transition: min-height 0.2s ease-in-out;
+    overflow-y: auto;
+    max-height: 300px;
 }
-
+#editorContainer::-webkit-scrollbar, .ql-editor::-webkit-scrollbar{
+    display: none;
+}
 .ql-editor {
     color: white;
     min-height: 100px;
     font-family: "Ubuntu", sans-serif;
     font-size: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
 }
 .ql-editor.ql-blank::before {
     color: #a1a1aa !important;

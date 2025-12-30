@@ -23,13 +23,13 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
 </head>
 <body>
-    <div class="h-screen flex flex-col overflow-hidden bg-zinc-800">
+    <div class="h-dvh flex flex-col overflow-hidden bg-zinc-800">
         <nav class="relative bg-zinc-700 z-2">
             <div class="mx-auto px-2 sm:px-6 lg:px-8">
                 <div class="relative flex items-center justify-between h-16">
                     <div class="flex flex-1 items-center justify-start ml-2 sm:ml-0 sm:items-stretch sm:justify-start">
                         <div class="flex shrink-0 items-center">
-                            <span class="font-sans font-normal sm:font-medium text-white text-xl sm:text-lg w-auto select-none">Note Maker</span>
+                            <a href="https://github.com/patrishr19" class="font-sans font-normal sm:font-medium text-white text-xl sm:text-lg w-auto select-none">Note Maker</a>
                         </div>
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4">
@@ -49,11 +49,27 @@
 
 
                         <div class="relative ml-3 select-none">
-                            <button class="relative flex rounded-full cursor-pointer">
+                            <button id="toggleMoreOptions" class="relative flex rounded-full cursor-pointer transition-all transform hover:scale-105">
                                 <span class="absolute -inset-1.5"></span>
                                 <span class="sr-only"></span>
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010" alt="Profile Picture" class="size-8 rounded-full bg-gray-800 ">
                             </button>
+                            <div id="moreOptions" class="absolute top-full mt-6 right-0 text-white flex flex-col p-2 z-50 bg-zinc-700 w-[calc(100vw-6rem)] sm:w-42 min-h-12 rounded-xl gap-1 shadow-lg outline outline-white/20 -outline-offset-1 opacity-0 transition-all ease-in-out duration-300 transform scale-95 pointer-events-none">
+                                <a href="profile.html" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102">
+                                    <svg class="size-6 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <span class="font-ubuntu font-light text-sm">Profile</span>
+                                </a>
+                                <div class="h-px bg-zinc-400/60"></div>
+                                <a href="preferences.html" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102">
+                                    <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7.84308 3.80211C9.8718 2.6007 10.8862 2 12 2C13.1138 2 14.1282 2.6007 16.1569 3.80211L16.8431 4.20846C18.8718 5.40987 19.8862 6.01057 20.4431 7C21 7.98943 21 9.19084 21 11.5937V12.4063C21 14.8092 21 16.0106 20.4431 17C19.8862 17.9894 18.8718 18.5901 16.8431 19.7915L16.1569 20.1979C14.1282 21.3993 13.1138 22 12 22C10.8862 22 9.8718 21.3993 7.84308 20.1979L7.15692 19.7915C5.1282 18.5901 4.11384 17.9894 3.55692 17C3 16.0106 3 14.8092 3 12.4063V11.5937C3 9.19084 3 7.98943 3.55692 7C4.11384 6.01057 5.1282 5.40987 7.15692 4.20846L7.84308 3.80211Z" stroke-width="1"></path> <circle cx="12" cy="12" r="3" stroke-width="1"></circle> </g></svg>
+                                    <span class="font-ubuntu font-light text-sm">Preferences</span>
+                                </a>
+                                <div class="h-px bg-zinc-400/60"></div>
+                                <a href="index.html" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102">
+                                    <svg class="size-6 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
+                                    <span class="font-ubuntu font-light text-sm">Log out</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -239,13 +255,62 @@
                 </div>
                 <!-- Recent Notes -->
                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="recentNotes">
-                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
-                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
-                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
-                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
-                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
-                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
-                    <div class="h-60 bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all"></div>
+                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
+                        <div class="flex flex-1 flex-col min-w-0">
+                            <!-- upper section -->
+                            <div class="flex mx-1 h-8 gap-2 items-center">
+                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
+                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-amber-500">Task</span>
+                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
+                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
+                                </button>
+                            </div>
+                            <!-- divider -->
+                            <div class="h-px bg-white/50"></div>
+                            <!-- task content -->
+                            <div class="mx-1 mt-1 flex-1">
+                                <p class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
+                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
+                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
+                                </p>
+                            </div>
+                            <!-- divider -->
+                            <div class="h-px bg-white/50"></div>
+                            <!-- bottom section -->
+                             <div class="flex mx-1 h-8 gap-2 items-center justify-between">
+                                <span class="font-montserrat font-semibold uppercase text-sm text-lime-600">Deadline: <span>15.1.2026</span></span>
+                                <span class="font-ubuntu font-medium uppercase text-md text-sky-200">To Do</span>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
+                        <div class="flex flex-1 flex-col min-w-0">
+                            <!-- upper section -->
+                            <div class="flex mx-1 h-8 gap-2 items-center">
+                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
+                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-amber-500">Task</span>
+                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
+                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
+                                </button>
+                            </div>
+                            <!-- divider -->
+                            <div class="h-px bg-white/50"></div>
+                            <!-- task content -->
+                            <div class="mx-1 mt-1 flex-1">
+                                <p class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
+                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
+                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
+                                </p>
+                            </div>
+                            <!-- divider -->
+                            <div class="h-px bg-white/50"></div>
+                            <!-- bottom section -->
+                             <div class="flex mx-1 h-8 gap-2 items-center justify-between">
+                                <span class="font-montserrat font-semibold uppercase text-sm text-lime-600">Deadline: <span>15.1.2026</span></span>
+                                <span class="font-ubuntu font-medium uppercase text-md text-sky-200">To Do</span>
+                             </div>
+                        </div>
+                    </div>
                  </div>
              </div>
         </div>

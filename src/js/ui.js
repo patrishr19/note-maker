@@ -72,8 +72,8 @@ export function closeCreateModal(){
     $('#mobileModal').removeClass('opacity-100 pointer-events-auto').addClass('opacity-0 pointer-events-none');
     $('#mobileCreate').removeClass('opacity-100 scale-100').addClass('opacity-0 scale-95');
 
-    $('#contentContainer').addClass('overflow-y-auto');
-    $('#contentContainer').removeClass('overflow-y-hidden');
+    $('body').removeClass('overflow-y-hidden');
+    $('body').addClass('overflow-y-auto');
 
     collapseEditor();
 }
@@ -96,4 +96,12 @@ export function expandRecent() {
 export function collapseRecent() {
     $('#recentNotes').addClass('hidden');
     $('#collapseRecent svg').removeClass('rotate-0').addClass('rotate-180');
+}
+
+export function openMoreOptions() {
+    $('#moreOptions').removeClass('opacity-0 scale-95 pointer-events-none').addClass('opacity-100 scale-100 pointer-events-auto');
+}
+
+export function closeMoreOptions() {
+    $('#moreOptions').removeClass('opacity-100 scale-100 pointer-events-auto').addClass('opacity-0 scale-95 pointer-events-none');
 }

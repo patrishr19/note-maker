@@ -1,5 +1,6 @@
 import {startEditor, getEditorContent, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions} from './ui.js';
 
+import {} from '.fetch.js';
 
 
 // all pages

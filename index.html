@@ -102,11 +102,11 @@
                 <!-- desktop create -->
                 <div id="desktopCreate" class="hidden sm:block mx-auto max-w-lg">
                     <!-- Create Field -->
-                    <div id="createField" class="block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
+                    <form id="createField" class="block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
                         <div class="flex flex-col p-2 gap-1">
                             <span class="flex">
-                                <input id="noteTitle" type="text" placeholder="Create a note" name="noteTitle" class="flex-1 bg-transparent outline-none border-non font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light placeholder:select-none">
-                                <button id="noteTypeSwitch" class="transition-all cursor-pointer px-2 py-1 bg-emerald-300/70 rounded-md text-white/80 font-medium select-none hover:scale-110 note-hidden">Note</button>
+                                <input id="noteTitle" type="text" placeholder="Create a note" name="noteTitle" class="flex-1 bg-transparent outline-none border-none font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light placeholder:select-none">
+                                <button type="button" id="noteTypeSwitch" class="transition-all cursor-pointer px-2 py-1 bg-emerald-300/70 rounded-md text-white/80 font-medium select-none hover:scale-110 note-hidden">Note</button>
                             </span>
                             <div id="editorContainer" class="text-white min-h-11 note-hidden"></div>
                             <div id="dateSubDiv" class="flex items-center note-hidden">
@@ -118,7 +118,7 @@
                             </div>
                             <input type="hidden" id="noteType" value="note" name="noteType">
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- Pinned notes collapse -->
                 <div id="pinnedHr" class="flex items-center gap-1 my-2 group">
@@ -134,111 +134,7 @@
                 </div>
                 <!-- Pinned Notes -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 select-none" id="pinnedNotes">
-                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
-                        <div class="flex flex-1 flex-col min-w-0">
-                            <!-- upper section -->
-                            <div class="flex mx-1 h-8 gap-2 items-center">
-                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
-                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-amber-500">Task</span>
-                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
-                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
-                                </button>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- task content -->
-                            <div class="mx-1 mt-1 flex-1">
-                                <p class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                </p>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- bottom section -->
-                             <div class="flex mx-1 h-8 gap-2 items-center justify-between">
-                                <span class="font-montserrat font-semibold uppercase text-sm text-lime-600">Deadline: <span>15.1.2026</span></span>
-                                <span class="font-ubuntu font-medium uppercase text-md text-sky-200">To Do</span>
-                             </div>
-                        </div>
-                    </div>
-                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
-                        <div class="flex flex-1 flex-col min-w-0">
-                            <!-- upper section -->
-                            <div class="flex mx-1 h-8 gap-2 items-center">
-                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
-                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-amber-500">Task</span>
-                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
-                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
-                                </button>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- task content -->
-                            <div class="mx-1 mt-1 flex-1">
-                                <p class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                </p>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- bottom section -->
-                             <div class="flex mx-1 h-8 gap-2 items-center justify-between">
-                                <span class="font-montserrat font-semibold uppercase text-sm text-lime-600">Deadline: <span>15.1.2026</span></span>
-                                <span class="font-ubuntu font-medium uppercase text-md text-sky-400">Doing</span>
-                             </div>
-                        </div>
-                    </div>
-                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
-                        <div class="flex flex-1 flex-col min-w-0">
-                            <!-- upper section -->
-                            <div class="flex mx-1 h-8 gap-2 items-center">
-                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
-                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-amber-500">Task</span>
-                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
-                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
-                                </button>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- task content -->
-                            <div class="mx-1 mt-1 flex-1">
-                                <p class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                </p>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- bottom section -->
-                             <div class="flex mx-1 h-8 gap-2 items-center justify-between">
-                                <span class="font-montserrat font-semibold uppercase text-sm text-red-500">Deadline: <span>24.12.2025</span></span>
-                                <span class="font-ubuntu font-medium uppercase text-md text-sky-600">Done</span>
-                             </div>
-                        </div>
-                    </div>
-                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
-                        <div class="flex flex-1 flex-col min-w-0">
-                            <!-- upper section -->
-                            <div class="flex mx-1 h-8 gap-2 items-center">
-                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
-                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-emerald-300">Note</span>
-                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
-                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
-                                </button>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- task content -->
-                            <div class="mx-1 mt-1 flex-1">
-                                <p class="break-all line-clamp-8 text-md font-light font-notoSans text-zinc-100">
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
                  
                 <!-- Recent notes collapse -->
@@ -255,62 +151,7 @@
                 </div>
                 <!-- Recent Notes -->
                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="recentNotes">
-                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
-                        <div class="flex flex-1 flex-col min-w-0">
-                            <!-- upper section -->
-                            <div class="flex mx-1 h-8 gap-2 items-center">
-                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
-                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-amber-500">Task</span>
-                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
-                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
-                                </button>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- task content -->
-                            <div class="mx-1 mt-1 flex-1">
-                                <p class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                </p>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- bottom section -->
-                             <div class="flex mx-1 h-8 gap-2 items-center justify-between">
-                                <span class="font-montserrat font-semibold uppercase text-sm text-lime-600">Deadline: <span>15.1.2026</span></span>
-                                <span class="font-ubuntu font-medium uppercase text-md text-sky-200">To Do</span>
-                             </div>
-                        </div>
-                    </div>
-                    <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
-                        <div class="flex flex-1 flex-col min-w-0">
-                            <!-- upper section -->
-                            <div class="flex mx-1 h-8 gap-2 items-center">
-                                <span class="flex-1 font-sans font-medium text-lg text-white/80">Title</span>
-                                <span class="font-montserrat font-semibold uppercase text-lg tracking-normal text-amber-500">Task</span>
-                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
-                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
-                                </button>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- task content -->
-                            <div class="mx-1 mt-1 flex-1">
-                                <p class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                    ContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentContentCo
-                                </p>
-                            </div>
-                            <!-- divider -->
-                            <div class="h-px bg-white/50"></div>
-                            <!-- bottom section -->
-                             <div class="flex mx-1 h-8 gap-2 items-center justify-between">
-                                <span class="font-montserrat font-semibold uppercase text-sm text-lime-600">Deadline: <span>15.1.2026</span></span>
-                                <span class="font-ubuntu font-medium uppercase text-md text-sky-200">To Do</span>
-                             </div>
-                        </div>
-                    </div>
+                    
                  </div>
              </div>
         </div>

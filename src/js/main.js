@@ -1,6 +1,5 @@
-import {startEditor, getEditorContent, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions} from './ui.js';
-
-import {} from '.fetch.js';
+import {sendNoteToServer, getNotesFromServer} from './fetch.js';
+import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes} from './ui.js';
 
 
 // all pages
@@ -18,6 +17,39 @@ $(document).on('click', (e) => {
 // home page
 if ($('#editorContainer').length > 0) {
     startEditor();
+
+    const createForm = $('#createField');
+
+    createForm.on('submit', async (event) => {
+        event.preventDefault();
+
+        const noteData = getCreationNoteData();
+
+        try {
+            const result = await sendNoteToServer(noteData);
+            console.log(result.status);
+            console.log(result.message);
+
+            if (result.status === 'success') {
+                const result = await getNotesFromServer();
+                const notes = result.data;
+
+                if (result.status === 'success') {
+                    $('#recentNotes').empty();
+                    $('#pinnedNotes').empty();
+                    notes.forEach(note => {
+                        renderNotes(note);
+                    });
+                    collapseEditor();
+                    closeCreateModal();
+                }
+            }
+        } catch (error) {
+            console.error('Fetch Failed', error)
+        }
+
+    });
+
 
     $(document).on("click", (e) => {
         const modal = $('#mobileModal');
@@ -98,3 +130,22 @@ if ($('#editorContainer').length > 0) {
         $("#noteType").val(newType);
     })
 }
+
+$(document).ready(async () => {
+        try {
+            const result = await getNotesFromServer();
+            const notes = result.data;
+            //console.log(notes);
+            
+            if (result.status === 'success') {
+                $('#recentNotes').empty();
+                $('#pinnedNotes').empty();
+    
+                notes.forEach(note => {
+                    renderNotes(note);
+                });
+            }
+        } catch (error) {
+            console.error('Loading notes failed', error)
+        }
+});

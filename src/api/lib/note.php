@@ -125,4 +125,45 @@
         ]);
         exit;
     }
+
+    function pinNotes($id, $isPinned) {
+        global $db;
+
+        $noteID = $id ?? '';
+        $pinned = $isPinned ?? '';
+        $validPinned = ['0', '1', 0, 1];
+        $result = false;
+
+        if (!filter_var($noteID, FILTER_VALIDATE_INT) || !in_array($pinned, $validPinned)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Failed to pin the note"
+            ]);
+            exit;
+        }
+        $newPin = (int)$pinned == 0 ? 1 : 0;
+ 
+        $sql = "UPDATE note SET is_pinned = :pin WHERE ID = :id";
+        $comm = $db->prepare($sql);
+        $comm->bindParam(':pin', $newPin, PDO::PARAM_INT);
+        $comm->bindParam(':id', $noteID, PDO::PARAM_INT);
+
+        if ($comm->execute()) {
+            $result = true;
+            $message = (int)$newPin == 0 ? 'Note unpinned' : 'Note pinned';
+        }
+        else {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Failed to pin the note"
+            ]);
+            exit;
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "message" => $message
+        ]);
+        exit;
+    }
 ?>

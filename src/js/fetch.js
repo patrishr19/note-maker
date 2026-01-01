@@ -26,3 +26,18 @@ export async function getNotesFromServer() {
     
     return await response.json();
 }
+
+export async function pinNote(id, isPinned) {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'pinNotes',
+            noteID: id,
+            isPinned: isPinned
+        })
+    });
+    return await response.json();
+}

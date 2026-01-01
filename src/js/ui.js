@@ -1,4 +1,4 @@
-let quill
+let quill;
 
 export function startEditor() {
     quill = new Quill('#editorContainer', {
@@ -119,6 +119,8 @@ export function renderNotes(note) {
     let isTask = false;
     let typeColor = 'text-white';
     let deadlineColor = 'text-lime-600';
+    let pinFill = 'fill-none';
+    let pinned = false;
     const noteType = note.type || "";
     if (noteType === 'task') {
         isTask = true;
@@ -127,13 +129,19 @@ export function renderNotes(note) {
         isTask = false;
         typeColor = 'text-emerald-300';
     }
-
+    if (note.is_pinned == 1) {
+        pinFill = 'fill-white';
+        pinned = true;
+    } else {
+        pinFill = 'fill-none';
+        pinned = false;
+    }
     let deadlineHTML = '';
 
     if (isTask && note.deadline) {
         const time = new Date(note.deadline);
         const now = new Date();
-        console.log(time, now)
+        //console.log(time, now)
         if (now > time) {
             deadlineColor = 'text-red-500';
         }
@@ -148,7 +156,7 @@ export function renderNotes(note) {
     }
 
     const noteHTML = `
-        <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer">
+        <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer noteCard" data-note-id='${note.ID}' data-pinned='${note.is_pinned}'>
                         <div class="flex flex-1 flex-col min-w-0">
                             <!-- upper section -->
                             <div class="flex mx-1 h-8 gap-2 items-center">
@@ -156,8 +164,8 @@ export function renderNotes(note) {
                                 ${note.title}
                                 </div>
                                 <span class="select-none font-montserrat font-semibold uppercase text-lg tracking-normal ${typeColor}">${note.type}</span>
-                                <button class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all">
-                                    <svg class="size-6 stroke-white fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
+                                <button type='button' class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all pinNote">
+                                    <svg class="size-6 stroke-white ${pinFill}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
                                 </button>
                             </div>
                             <!-- divider -->
@@ -172,5 +180,9 @@ export function renderNotes(note) {
                         </div>
                     </div>
     ` 
-    $(noteHTML).appendTo($('#recentNotes'));
+    if (pinned) {
+        $(noteHTML).appendTo($('#pinnedNotes'));
+    } else {
+        $(noteHTML).appendTo($('#recentNotes'));
+    }
 }

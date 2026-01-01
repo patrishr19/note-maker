@@ -34,7 +34,10 @@
             fetchNotes();
 
             break;
-        
+        case 'pinNotes';
+            pinNotes($data['noteID'], $data['isPinned']);
+            
+            break;
         default:
             echo json_encode([
                 "status" => "error",

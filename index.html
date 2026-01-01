@@ -155,16 +155,21 @@
                  </div>
              </div>
         </div>
-    </div>
-    <button class="fixed sm:hidden bottom-6 right-6 z-50 bg-zinc-600 text-white/80 rounded-2xl p-2 inset-shadow-lg cursor-pointer" id="modalToggleButton">
-        <svg class="select-none size-10 stroke-current group-hover:stroke-white transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 12H20M12 4V20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="sr-only">New Note</span>
-    </button>
-    <!-- mobile create modal -->
-    <div id="mobileModal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-md sm:hidden transition-all duration-300 ease-in-out opacity-0 pointer-events-none">
-        <div class="w-full transition-all duration-300 transform scale-95 opacity-0" id="mobileCreate"></div>
+        <div id='dynamic'>
+            <div id="mobileModalContainer">
+                <button class="fixed sm:hidden bottom-6 right-6 z-50 bg-zinc-600 text-white/80 rounded-2xl p-2 inset-shadow-lg cursor-pointer" id="modalToggleButton">
+                    <svg class="select-none size-10 stroke-current group-hover:stroke-white transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12H20M12 4V20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="sr-only">New Note</span>
+                </button>
+            </div>
+            <!-- mobile create modal -->
+            <div id="mobileModal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-md sm:hidden transition-all duration-300 ease-in-out opacity-0 pointer-events-none">
+                <div class="w-full transition-all duration-300 transform scale-95 opacity-0" id="mobileCreate"></div>
+            </div>
+        </div>
+        
     </div>
 </body>
 </html>

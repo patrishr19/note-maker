@@ -183,11 +183,12 @@ $(document).ready(() => {
     $(document).on('click', '.nav-link', (e) => {
         e.preventDefault();
         const url = $(e.currentTarget).attr('href');
-
         $('.nav-link').removeAttr('aria-current');
         $(currentTarget).attr('aria-current', 'page');
         $('#mainContainer').load(url + ' #')
     });
     // #endregion
     
-}) 
+})
+
+// PRomenit vsechny stranky na funkce napr initHomePage() kde nahazime vsechny event listenery, + initGlobalPage() na navbar, profile dropdown atd.

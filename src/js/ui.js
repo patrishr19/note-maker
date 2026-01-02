@@ -186,3 +186,8 @@ export function renderNotes(note) {
         $(noteHTML).appendTo($('#recentNotes'));
     }
 }
+
+export function updateNav(url){
+    $('.nav-link').removeAttr('aria-current');
+    $(`.nav-link[href="${url}"]`).attr('aria-current', 'page');
+}

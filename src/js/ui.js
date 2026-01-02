@@ -190,4 +190,13 @@ export function renderNotes(note) {
 export function updateNav(url){
     $('.nav-link').removeAttr('aria-current');
     $(`.nav-link[href="${url}"]`).attr('aria-current', 'page');
+
+    $('.nav-desktop').removeClass('bg-gray-950/25 text-white').addClass('text-gray-300 hover:bg-white/5 hover:text-white');
+    $(`.nav-desktop[href="${url}"]`).removeClass('text-gray-300 hover:bg-white/5 hover:text-white').addClass('bg-gray-950/25 text-white');
+    
+    $('.nav-extra').removeClass('text-gray-100').addClass('text-gray-400')
+    $(`.nav-extra[href="${url}"]`).removeClass('text-gray-400').addClass('text-gray-100');
+
+    $('.nav-mobile').removeClass('text-white bg-gray-950/25').addClass('text-zinc-400');
+    $(`.nav-mobile[href="${url}"]`).removeClass('text-zinc-400').addClass('text-white bg-gray-950/25');
 }

@@ -1,20 +1,20 @@
 import {sendNoteToServer, getNotesFromServer, pinNote, loadPage} from './fetch.js';
 import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav} from './ui.js';
-import {reInitPage, initHome} from './init.js';
-
-
+import {reInitPage, initHome, initPinned} from './init.js';
 
 $(document).ready(() => {
     let initialPath = window.location.pathname.split('/').pop();
+    //console.log(initialPath);
+    const valid = ['home', 'pinned', 'archive', 'profile', 'preferences'];
 
-    if (initialPath === '' || initialPath === 'index.html') {
-        loadPage('home.html', false, true);
+    if (initialPath === '' || initialPath === 'index.html' || initialPath === 'index' || !valid.includes(initialPath)) {
+        loadPage('home', false, true);
     } else {
         loadPage(initialPath, false);
     }
 
     const currentPage = $('.navbar a[aria-current="page"]').attr('href');
-    console.log(currentPage);
+    //console.log(currentPage);
     $(document).on('click', '.nav-link', (e) => {
         e.preventDefault();
         const url = $(e.currentTarget).attr('href');
@@ -37,3 +37,5 @@ $(document).ready(() => {
 })
 
 // PRomenit vsechny stranky na funkce napr initHomePage() kde nahazime vsechny event listenery, + initGlobalPage() na navbar, profile dropdown atd.
+
+

@@ -97,7 +97,7 @@
     function fetchNotes() {
         global $db;
         $status = 'active';
-        $sql = "SELECT * FROM note WHERE status = :status ORDER BY ID DESC";
+        $sql = "SELECT * FROM note WHERE status = :status ORDER BY created_date DESC";
         $comm = $db->prepare($sql);
         $comm->bindParam(":status", $status, PDO::PARAM_STR);
         $comm->execute();

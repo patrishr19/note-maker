@@ -1,11 +1,12 @@
 import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav} from './ui.js';
 import {sendNoteToServer, getNotesFromServer, pinNote, loadPage} from './fetch.js';
 
-
 export function  reInitPage(url) {
     if (url.includes('home.html') || url.includes('index.html ') || url === '/' || url === '') {
         initHome();
-    } 
+    }  else if (url.includes('pinned') || url.includes('pinned.html')) {
+        initPinned();
+    }
 }
 
 export function initHome() {
@@ -20,7 +21,8 @@ export function initHome() {
             if (result.status === 'success') {
                 $('#recentNotes').empty();
                 $('#pinnedNotes').empty();
-    
+                
+                notes.sort((a, b) => new Date(a.created_date) - new Date(b.created_date)); // Serazeni podle datum https://www.geeksforgeeks.org/javascript/sort-an-object-array-by-date-in-javascript/
                 notes.forEach(note => {
                     renderNotes(note);
                 });
@@ -154,13 +156,13 @@ export function initHome() {
             if (result.status === 'success') {
                 const newPin = pinned == 0 ? 1 : 0;
                 note.data('pinned', newPin);
-
+                
                 if (newPin === 1) {
                     note.prependTo('#pinnedNotes');
-                    $('.noteCard svg').removeClass('fill-none').addClass('fill-white');
+                    note.find('svg').removeClass('fill-none').addClass('fill-white');
                 } else {
                     note.prependTo('#recentNotes');
-                    $('.noteCard svg').removeClass('fill-white').addClass('fill-none');
+                    note.find('svg').removeClass('fill-white').addClass('fill-none');
                 }
             }
         } catch (error) {
@@ -169,3 +171,51 @@ export function initHome() {
     });
     
 }
+
+ export function initPinned() {
+    $(document).ready(async () => {
+        try {
+            const result = await getNotesFromServer();
+            const notes = result.data;
+            console.log(notes);
+            
+            if (result.status === 'success') {
+                $('#recentNotes').empty();
+                $('#pinnedNotes').empty();
+    
+                notes.forEach(note => {
+                    renderNotes(note);
+                });
+            }
+        } catch (error) {
+            console.error('Loading notes failed', error)
+        }
+    });
+
+
+    $(document).on('click', '.pinNote', async (e) => {
+        const note = $(e.target).closest('.noteCard');
+        const id = note.data('note-id');
+        const pinned = note.data('pinned');
+
+        try {
+            const result = await pinNote(id, pinned);
+            const message = result.message;
+            console.log(message);
+            
+            if (result.status === 'success') {
+                const newPin = pinned == 0 ? 1 : 0;
+                note.data('pinned', newPin);
+
+                if (newPin === 1) {
+                    note.prependTo('#pinnedNotes');
+                    note.find('svg').removeClass('fill-none').addClass('fill-white');
+                } else {
+                    note.remove();
+                }
+            }
+        } catch (error) {
+            console.error('Error at pinning note', error);
+        }
+    });
+ }

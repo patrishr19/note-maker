@@ -45,11 +45,16 @@ export async function pinNote(id, isPinned) {
 }
 
 export async function loadPage(url, pushState = true, replace = false) {
+    const file = (url === '' || url === 'index' || url === 'index.html') ? 'home.html' : url + '.html';
     try {
-        const response = await fetch(url);
+        const response = await fetch(file);
+        if (!response.ok) {
+            alert('Page not found');
+            return;
+        }
         const htmlText = await response.text();
         const doc = new DOMParser().parseFromString(htmlText, 'text/html');
-
+        
         const newContent = doc.querySelector('#contentContainer'); // jquery nejde
         if (newContent) {
             $('#contentContainer').replaceWith(newContent.outerHTML);
@@ -75,7 +80,7 @@ export async function loadPage(url, pushState = true, replace = false) {
 
         updateNav(url);
 
-        reInitPage(url);
+        reInitPage(file);
 
     } catch (error) {
         console.log("Navigation failed", error);

@@ -34,9 +34,9 @@
                         </div>
                         <div class="hidden sm:ml-6 sm:block">
                             <div class="flex space-x-4 navbar">
-                                <a href="home" aria-current="page" class="font-sans rounded-md bg-gray-950/25 px-3 py-2 text-sm font-medium text-white nav-link nav-desktop">Home</a>
-                                <a href="pinned" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white nav-link nav-desktop">Pinned</a>
-                                <a href="archive" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white nav-link nav-desktop">Archive</a>
+                                <a href="/note-maker/home" aria-current="page" class="font-sans rounded-md bg-gray-950/25 px-3 py-2 text-sm font-medium text-white nav-link nav-desktop" data-view="home">Home</a>
+                                <a href="/note-maker/pinned" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white nav-link nav-desktop" data-view="pinned">Pinned</a>
+                                <a href="/note-maker/archive" class="font-sans rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white nav-link nav-desktop" data-view="archive">Archive</a>
                             </div>
                         </div>
                     </div>
@@ -56,17 +56,17 @@
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010" alt="Profile Picture" class="size-8 rounded-full bg-gray-800 ">
                             </button>
                             <div id="moreOptions" class="absolute top-full mt-6 right-0 text-white flex flex-col p-2 z-50 bg-zinc-700 w-[calc(100vw-6rem)] sm:w-42 min-h-12 rounded-xl gap-1 shadow-lg outline outline-white/20 -outline-offset-1 opacity-0 transition-all ease-in-out duration-300 transform scale-95 pointer-events-none">
-                                <a href="profile" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra">
+                                <a href="/note-maker/profile" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra" data-view="profile">
                                     <svg class="size-6 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                     <span class="font-ubuntu font-light text-sm">Profile</span>
                                 </a>
                                 <div class="h-px bg-zinc-400/60"></div>
-                                <a href="preferences" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra">
+                                <a href="/note-maker/preferences" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra" data-view="preferences">
                                     <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7.84308 3.80211C9.8718 2.6007 10.8862 2 12 2C13.1138 2 14.1282 2.6007 16.1569 3.80211L16.8431 4.20846C18.8718 5.40987 19.8862 6.01057 20.4431 7C21 7.98943 21 9.19084 21 11.5937V12.4063C21 14.8092 21 16.0106 20.4431 17C19.8862 17.9894 18.8718 18.5901 16.8431 19.7915L16.1569 20.1979C14.1282 21.3993 13.1138 22 12 22C10.8862 22 9.8718 21.3993 7.84308 20.1979L7.15692 19.7915C5.1282 18.5901 4.11384 17.9894 3.55692 17C3 16.0106 3 14.8092 3 12.4063V11.5937C3 9.19084 3 7.98943 3.55692 7C4.11384 6.01057 5.1282 5.40987 7.15692 4.20846L7.84308 3.80211Z" stroke-width="1"></path> <circle cx="12" cy="12" r="3" stroke-width="1"></circle> </g></svg>
                                     <span class="font-ubuntu font-light text-sm">Preferences</span>
                                 </a>
                                 <div class="h-px bg-zinc-400/60"></div>
-                                <a href="home" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra">
+                                <a href="/note-maker/home" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra" data-view="home">
                                     <svg class="size-6 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
                                     <span class="font-ubuntu font-light text-sm">Log out</span>
                                 </a>
@@ -80,19 +80,19 @@
         <div class="flex flex-1 overflow-hidden" id='secondaryContainer'>
             <!-- SIDEBAR-->
              <div class="w-16 bg-zinc-700 sm:hidden flex flex-col items-center py-4 space-y-4" id="sidebar">
-                <a aria-current="page" class="relative rounded-xl p-2 text-white bg-gray-950/25 nav-link nav-mobile" href="home">
+                <a aria-current="page" class="relative rounded-xl p-2 text-white bg-gray-950/25 nav-link nav-mobile" href="/note-maker/home" data-view="home">
                     <svg class="size-8 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg>
                     <span class="absolute -inset-1.5"></span>
                     <span class="sr-only">Home</span>
                 </a>
 
-                <a class="relative rounded-xl p-2 text-zinc-400 nav-link nav-mobile" href="pinned">
+                <a class="relative rounded-xl p-2 text-zinc-400 nav-link nav-mobile" href="/note-maker/pinned" data-view="pinned">
                     <svg class="size-8 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="2" stroke-linecap="round"></path> </g></svg>
                     <span class="absolute -inset-1.5"></span>
                     <span class="sr-only">Pinned</span>
                 </a>
 
-                <a class="relative rounded-xl p-2 text-zinc-400 nav-link nav-mobile" href="archive">
+                <a class="relative rounded-xl p-2 text-zinc-400 nav-link nav-mobile" href="/note-maker/archive" data-view="archive">
                     <svg class="size-8 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 13H15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M3 6.5C3 6.03534 3 5.80302 3.03843 5.60982C3.19624 4.81644 3.81644 4.19624 4.60982 4.03843C4.80302 4 5.03534 4 5.5 4H12H18.5C18.9647 4 19.197 4 19.3902 4.03843C20.1836 4.19624 20.8038 4.81644 20.9616 5.60982C21 5.80302 21 6.03534 21 6.5V6.5V6.5C21 6.96466 21 7.19698 20.9616 7.39018C20.8038 8.18356 20.1836 8.80376 19.3902 8.96157C19.197 9 18.9647 9 18.5 9H12H5.5C5.03534 9 4.80302 9 4.60982 8.96157C3.81644 8.80376 3.19624 8.18356 3.03843 7.39018C3 7.19698 3 6.96466 3 6.5V6.5V6.5Z" stroke-width="2" stroke-linejoin="round"></path> <path d="M4 9V15.9999C4 17.8856 4 18.8284 4.58579 19.4142C5.17157 19.9999 6.11438 19.9999 8 19.9999H9H15H16C17.8856 19.9999 18.8284 19.9999 19.4142 19.4142C20 18.8284 20 17.8856 20 15.9999V9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     <span class="absolute -inset-1.5"></span>
                     <span class="sr-only">Archive</span>

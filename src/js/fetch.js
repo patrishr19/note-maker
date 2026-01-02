@@ -1,5 +1,8 @@
-import {updateNav} from './ui.js';
+import {updateNav, renderNotes} from './ui.js';
 import {reInitPage} from './init.js';
+import {BASE} from './main.js';
+import {views} from './views.js';
+
 export async function sendNoteToServer(noteData) {
     const response = await fetch('http://localhost/note-maker/src/api/api.php', {
         method: 'POST',
@@ -43,47 +46,50 @@ export async function pinNote(id, isPinned) {
     });
     return await response.json();
 }
-
-export async function loadPage(url, pushState = true, replace = false) {
-    const file = (url === '' || url === 'index' || url === 'index.html') ? 'home.html' : url + '.html';
+export async function refreshNotes() {
     try {
-        const response = await fetch(file);
-        if (!response.ok) {
-            alert('Page not found');
-            return;
-        }
-        const htmlText = await response.text();
-        const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+        const result = await getNotesFromServer();
+        const notes = result.data;
+        console.log(notes);
         
-        const newContent = doc.querySelector('#contentContainer'); // jquery nejde
-        if (newContent) {
-            $('#contentContainer').replaceWith(newContent.outerHTML);
+        if (result.status === 'success') {
+            $('#recentNotes').empty();
+            $('#pinnedNotes').empty();
+            
+            notes.sort((a, b) => new Date(b.created_date) - new Date(a.created_date)); // Serazeni podle datum
+            notes.forEach(note => {
+                renderNotes(note);
+            });
         }
-
-        const dynamicDiv = $('#dynamic');
-        dynamicDiv.empty();
-        // home stuff
-        const modalBtn = doc.querySelector('#modalToggleButton');
-        const modal = doc.querySelector('#mobileModal');
-        if (modalBtn) {
-            dynamicDiv.append(modalBtn);
-        }
-        if (modal) {
-            dynamicDiv.append(modal);
-        }
-        // browser
-        if (replace) {
-            window.history.replaceState({}, '', url);
-        } else if (pushState) {
-            window.history.pushState({}, '', url)
-        }
-
-        updateNav(url);
-
-        reInitPage(file);
-
     } catch (error) {
-        console.log("Navigation failed", error);
+        console.error('Loading notes failed', error)
+    }
+}
+
+export function loadPage(url, pushState = true, replace = false) {
+    let viewKey = url.replace(BASE, '').replace(/\//g, '') || 'home';
+    if (viewKey === 'index.html') {
+        viewKey = 'home';
     }
 
+    const view = views[viewKey];
+    
+    if (!view) {
+        console.log('Page not found', viewKey);
+        return;
+    }
+
+    $('#contentContainer').html(view.content);
+    $('#dynamic').html(view.dynamic);
+
+    const fullUrl = viewKey === 'home' ? `${BASE}/` : `${BASE}/${viewKey}`;
+
+    if (replace) {
+        window.history.replaceState({}, '',fullUrl);
+    } else if (pushState) {
+        window.history.pushState({}, '',fullUrl);
+    }
+    console.log(viewKey);
+    updateNav(viewKey);
+    reInitPage(viewKey);
 }

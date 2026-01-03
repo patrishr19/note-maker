@@ -17,7 +17,6 @@ export async function sendNoteToServer(noteData) {
 
     return await response.json();
 }
-
 export async function getNotesFromServer() {
     const response = await fetch('http://localhost/note-maker/src/api/api.php', {
         method: 'POST',
@@ -31,7 +30,6 @@ export async function getNotesFromServer() {
     
     return await response.json();
 }
-
 export async function pinNote(id, isPinned) {
     const response = await fetch('http://localhost/note-maker/src/api/api.php', {
         method: 'POST',
@@ -50,11 +48,12 @@ export async function refreshNotes() {
     try {
         const result = await getNotesFromServer();
         const notes = result.data;
-        console.log(notes);
+        //console.log(notes);
         
         if (result.status === 'success') {
             $('#recentNotes').empty();
             $('#pinnedNotes').empty();
+            $('#archiveNotes').empty();
             
             notes.sort((a, b) => new Date(b.created_date) - new Date(a.created_date)); // Serazeni podle datum
             notes.forEach(note => {
@@ -65,7 +64,6 @@ export async function refreshNotes() {
         console.error('Loading notes failed', error)
     }
 }
-
 export function loadPage(url, pushState = true, replace = false) {
     let viewKey = url.replace(BASE, '').replace(/\//g, '') || 'home';
     if (viewKey === 'index.html') {
@@ -92,4 +90,49 @@ export function loadPage(url, pushState = true, replace = false) {
     console.log(viewKey);
     updateNav(viewKey);
     reInitPage(viewKey);
+}
+export async function fetchSingleNote(id) {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'fetchSingleNote',
+            note_id: id
+        })
+    });
+
+    return await response.json();
+}
+
+export async function deleteNote(id) {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'deleteNote',
+            note_id: id
+        })
+    });
+    
+    return await response.json();
+}
+
+export async function archiveNote(id, status) {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'archiveNote',
+            note_id: id,
+            status: status
+        })
+    });
+    
+    return await response.json();
 }

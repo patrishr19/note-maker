@@ -1,5 +1,5 @@
-import {sendNoteToServer, getNotesFromServer, pinNote, loadPage, refreshNotes} from './fetch.js';
-import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav} from './ui.js';
+import {sendNoteToServer, getNotesFromServer, pinNote, loadPage, refreshNotes, fetchSingleNote, deleteNote, archiveNote} from './fetch.js';
+import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav, openUpdateModal, closeUpdateModal, loadDataToUpdate} from './ui.js';
 import {reInitPage, initHome, initPinned} from './init.js';
 import { views } from './views.js';
 
@@ -78,10 +78,95 @@ $(document).ready(() => {
             } 
             else if (!isInside && !isHidden) {
                 collapseEditor();
-                setNoteMode();
+                setNoteMode($('#noteTypeSwitch'), $('#taskDeadlineText'), $('#taskDeadline'));
                 $("#noteType").val('note');
             }
 
+        });
+
+        $(document).on('click', async (e) => {
+            const clickedCard = $(e.target).closest('.noteCard').length > 0;
+            const insideUpdateField = $(e.target).closest('#updateField').length > 0;
+            const isModalHidden = $('#updateModal').hasClass('opacity-0');
+            const clickedSwitch = $(e.target).closest('#noteUpdateTypeSwitch').length > 0;
+            const clickedDelete = $(e.target).closest('#noteUpdateDelete').length > 0;
+            const clickedArchive = $(e.target).closest('#noteUpdateArchive').length > 0;
+            if (clickedCard) {
+                let note;
+                const targetNote = $(e.target).closest('.noteCard');
+                const noteID = targetNote.data('note-id');
+                
+                try {
+                    const result = await fetchSingleNote(noteID);
+                    if (result.status === 'success') {
+                        note = result.data;
+                        console.log(note);
+                    }
+
+                } catch (error) {
+                    console.error('Failed', error)
+                }
+
+
+                if (isModalHidden) {
+                    loadDataToUpdate(note);
+                    if (note.type === 'task') {
+                        setTaskMode($('#noteUpdateTypeSwitch'), $('#taskUpdateDeadlineText'));
+                    } else {
+                        setNoteMode($('#noteUpdateTypeSwitch'), $('#taskUpdateDeadlineText'), $('#taskUpdateDeadline'));
+                    }
+                    openUpdateModal();
+                } else {
+                    closeUpdateModal();
+                }
+                return;
+            }
+
+            if (!isModalHidden) {
+                if (clickedSwitch) {
+                    //console.log($('#noteUpdateType').val());
+                    let nextType;
+                    if ($('#noteUpdateType').val() === 'note') {
+                        setTaskMode($('#noteUpdateTypeSwitch'), $('#taskUpdateDeadlineText'));
+                        nextType = 'task';
+                    } else {
+                        setNoteMode($('#noteUpdateTypeSwitch'), $('#taskUpdateDeadlineText'), $('#taskUpdateDeadline'));
+                        nextType = 'note';
+                    }
+                    $('#noteUpdateType').val(nextType);
+                }
+                if (clickedDelete) {
+                    const id = $('#updateField').data('note-id');
+                    try {
+                        const result = await deleteNote(id);
+
+                        if (result.status === 'success') {
+                            refreshNotes();
+                            closeUpdateModal();
+                        }
+                    } catch (error) {
+                        console.error('Failed', error)
+                    }
+                }
+                if (clickedArchive) {
+                    const id = $('#updateField').data('note-id');
+                    const status = $('#updateField').data('note-status');
+                    console.log('clik');
+                    try {
+                        const result = await archiveNote(id, status);
+                        if (result.status === 'success') {
+                            refreshNotes();
+                            closeUpdateModal();
+                        }
+                    } catch (error) {
+                        console.error('Failed', error)
+                    }
+                }
+                if (!insideUpdateField) {
+                    closeUpdateModal();
+                }
+                return;
+            }
         });
 
 
@@ -136,16 +221,17 @@ $(document).ready(() => {
             let newType = currentType;
             if (currentType === 'note') {
                 newType = 'task';
-                setTaskMode();
+                setTaskMode($('#noteTypeSwitch'), $('#taskDeadlineText'));
             }
             else {
                 newType = 'note';
-                setNoteMode();
+                setNoteMode($('#noteTypeSwitch'), $('#taskDeadlineText'), $('#taskDeadline'));
             }
             $("#noteType").val(newType);
         })
 
         $(document).on('click', '.pinNote', async (e) => {
+            e.stopPropagation();
             const note = $(e.target).closest('.noteCard');
             const id = note.data('note-id');
             const pinned = note.data('pinned');
@@ -171,6 +257,8 @@ $(document).ready(() => {
                 console.error('Error at pinning note', error);
             }
         });
+
+
     // #endregion
 
 });

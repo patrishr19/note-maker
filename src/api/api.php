@@ -38,6 +38,18 @@
             pinNotes($data['noteID'], $data['isPinned']);
             
             break;
+        case 'fetchSingleNote':
+            fetchSingleNote($data['note_id']);
+
+            break;
+        case 'deleteNote':
+            deleteNote($data['note_id']);
+            break;
+        case 'archiveNote':
+            $newStatus = $data['status'] === 'active' ? 'archive' : 'active';
+            archiveNote($data['note_id'], $newStatus);
+
+            break;
         default:
             echo json_encode([
                 "status" => "error",

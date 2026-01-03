@@ -11,13 +11,13 @@ export const views = {
                             <button type="button" id="noteTypeSwitch" class="transition-all cursor-pointer px-2 py-1 bg-emerald-300/70 rounded-md text-white/80 font-medium select-none hover:scale-110 note-hidden">Note</button>
                         </span>
                         <div id="editorContainer" class="text-white min-h-11 note-hidden"></div>
-                        <div id="dateSubDiv" class="flex items-center note-hidden">
-                            <div class="px-3 text-white/60 font-light font-openSans note-hidden" id="taskDeadlineText">
+                        <div id="dateSubDiv" class="flex items-center note-hidden flex-wrap">
+                            <div class="px-3 text-white/60 font-light font-openSans note-hidden flex-wrap" id="taskDeadlineText">
                                 <span class="select-none">Set Deadline:</span>
-                                <input type="datetime-local" class="border-none outline-none w-48 select-none cursor-pointer" id="taskDeadline" name="taskDeadline">
+                                <input type="datetime-local" class="border-none outline-none select-none cursor-pointer" id="taskDeadline" name="taskDeadline">
                             </div>
-                            <button id="noteSubmit" type="submit" class="p-1 w-1/6 ml-auto text-white/60 font-openSans font-light cursor-pointer hover:bg-zinc-700/30 rounded-md note-hidden select-none">Save</button>
                         </div>
+                        <button id="noteSubmit" type="submit" class="p-1 px-3 ml-auto text-white/60 font-openSans font-light cursor-pointer hover:bg-zinc-700/30 rounded-md note-hidden select-none">Save</button>
                         <input type="hidden" id="noteType" value="note" name="noteType">
                     </div>
                 </form>
@@ -67,6 +67,34 @@ export const views = {
             <div id="mobileModal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4 backdrop-blur-md sm:hidden transition-all duration-300 ease-in-out opacity-0 pointer-events-none">
                 <div class="w-full transition-all duration-300 transform scale-95 opacity-0" id="mobileCreate"></div>
             </div>
+            <!-- update modal -->
+            <div id="updateModal" class="fixed inset-0 z-50 bg-black-60 flex items-center justify-center p-4 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none">
+                <div class='w-full transition-all duration-300 transform scale-95 opacity-0' id='updateCreate'>
+                    <form id="updateField" class="block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
+                        <div class="flex flex-col p-2 gap-1">
+                            <span class="flex">
+                                <input id="noteUpdateTitle" type="text" placeholder="Create a note" name="noteTitle" class="flex-1 bg-transparent outline-none border-none font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light placeholder:select-none">
+                                <button type="button" id="noteUpdateTypeSwitch" class="transition-all cursor-pointer px-2 py-1 bg-emerald-300/70 rounded-md text-white/80 font-medium select-none hover:scale-110">Note</button>
+                            </span>
+                            <div id="editorUpdateContainer" class="text-white min-h-11"></div>
+                            <div id="dateUpdateSubDiv" class="flex items-center flex-wrap">
+                                <div class="px-3 text-white/60 font-light font-openSans" id="taskUpdateDeadlineText">
+                                    <span class="select-none">Set Deadline:</span>
+                                    <input type="datetime-local" class="border-none outline-none select-none cursor-pointer" id="taskUpdateDeadline" name="taskDeadline">
+                                </div>
+                            </div>
+                            <div class='flex w-full gap-1 mt-1'>
+                                <button id="noteUpdateSubmit" type="button" class="w-[60%] py-1 ml-auto text-white/90 font-openSans font-light cursor-pointer bg-zinc-600 hover:bg-zinc-700 rounded-md select-none">Update</button>
+                                <button id="noteUpdateArchive" type="button" class="w-[30%] py-1 ml-auto text-white/90 font-openSans font-light cursor-pointer bg-sky-600 hover:bg-sky-700 rounded-md select-none">Archive</button>
+                                <button id="noteUpdateDelete" type="button" class="w-[10%] py-1 ml-auto text-white font-openSans font-light cursor-pointer bg-red-600/50 hover:bg-red-700 rounded-md select-none">
+                                    <svg class='size-6 stroke-current mx-auto' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </button>
+                            </div>
+                            <input type="hidden" id="noteUpdateType" value="note" name="noteType">
+                        </div>
+                    </form>
+                </div>
+            </div>
         `
     },
     pinned: {
@@ -76,7 +104,74 @@ export const views = {
                 
             </div>        
         `,
-        dynamic: ``
+        dynamic: `
+            <!-- update modal -->
+            <div id="updateModal" class="fixed inset-0 z-50 bg-black-60 flex items-center justify-center p-4 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none">
+                <div class='w-full transition-all duration-300 transform scale-95 opacity-0' id='updateCreate'>
+                    <form id="updateField" class="block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
+                        <div class="flex flex-col p-2 gap-1">
+                            <span class="flex">
+                                <input id="noteUpdateTitle" type="text" placeholder="Create a note" name="noteTitle" class="flex-1 bg-transparent outline-none border-none font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light placeholder:select-none">
+                                <button type="button" id="noteUpdateTypeSwitch" class="transition-all cursor-pointer px-2 py-1 bg-emerald-300/70 rounded-md text-white/80 font-medium select-none hover:scale-110">Note</button>
+                            </span>
+                            <div id="editorUpdateContainer" class="text-white min-h-11"></div>
+                            <div id="dateUpdateSubDiv" class="flex items-center flex-wrap">
+                                <div class="px-3 text-white/60 font-light font-openSans" id="taskUpdateDeadlineText">
+                                    <span class="select-none">Set Deadline:</span>
+                                    <input type="datetime-local" class="border-none outline-none select-none cursor-pointer" id="taskUpdateDeadline" name="taskDeadline">
+                                </div>
+                            </div>
+                            <div class='flex w-full gap-1 mt-1'>
+                                <button id="noteUpdateSubmit" type="button" class="w-[60%] py-1 ml-auto text-white/90 font-openSans font-light cursor-pointer bg-zinc-600 hover:bg-zinc-700 rounded-md select-none">Update</button>
+                                <button id="noteUpdateArchive" type="button" class="w-[30%] py-1 ml-auto text-white/90 font-openSans font-light cursor-pointer bg-sky-600 hover:bg-sky-700 rounded-md select-none">Archive</button>
+                                <button id="noteUpdateDelete" type="button" class="w-[10%] py-1 ml-auto text-white font-openSans font-light cursor-pointer bg-red-600/50 hover:bg-red-700 rounded-md select-none">
+                                    <svg class='size-6 stroke-current mx-auto' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </button>
+                            </div>
+                            <input type="hidden" id="noteUpdateType" value="note" name="noteType">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `
+    },
+    archive: {
+        content: `
+            <!-- Archived Notes -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 select-none mt-3" id="archiveNotes">
+                
+            </div>
+        `,
+        dynamic: `
+            <!-- update modal -->
+            <div id="updateModal" class="fixed inset-0 z-50 bg-black-60 flex items-center justify-center p-4 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none">
+                <div class='w-full transition-all duration-300 transform scale-95 opacity-0' id='updateCreate'>
+                    <form id="updateField" class="block w-full max-w-lg! mx-auto! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 my-3">
+                        <div class="flex flex-col p-2 gap-1">
+                            <span class="flex">
+                                <input id="noteUpdateTitle" type="text" placeholder="Create a note" name="noteTitle" class="flex-1 bg-transparent outline-none border-none font-normal px-3 font-openSans text-white/80 placeholder-white/40 placeholder:font-light placeholder:select-none">
+                                <button type="button" id="noteUpdateTypeSwitch" class="transition-all cursor-pointer px-2 py-1 bg-emerald-300/70 rounded-md text-white/80 font-medium select-none hover:scale-110">Note</button>
+                            </span>
+                            <div id="editorUpdateContainer" class="text-white min-h-11"></div>
+                            <div id="dateUpdateSubDiv" class="flex items-center flex-wrap">
+                                <div class="px-3 text-white/60 font-light font-openSans" id="taskUpdateDeadlineText">
+                                    <span class="select-none">Set Deadline:</span>
+                                    <input type="datetime-local" class="border-none outline-none select-none cursor-pointer" id="taskUpdateDeadline" name="taskDeadline">
+                                </div>
+                            </div>
+                            <div class='flex w-full gap-1 mt-1'>
+                                <button id="noteUpdateSubmit" type="button" class="w-[60%] py-1 ml-auto text-white/90 font-openSans font-light cursor-pointer bg-zinc-600 hover:bg-zinc-700 rounded-md select-none">Update</button>
+                                <button id="noteUpdateArchive" type="button" class="w-[30%] py-1 ml-auto text-white/90 font-openSans font-light cursor-pointer bg-sky-600 hover:bg-sky-700 rounded-md select-none">Activate</button>
+                                <button id="noteUpdateDelete" type="button" class="w-[10%] py-1 ml-auto text-white font-openSans font-light cursor-pointer bg-red-600/50 hover:bg-red-700 rounded-md select-none">
+                                    <svg class='size-6 stroke-current mx-auto' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </button>
+                            </div>
+                            <input type="hidden" id="noteUpdateType" value="note" name="noteType">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `
     },
     profile: {
         content: `

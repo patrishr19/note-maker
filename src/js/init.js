@@ -1,4 +1,4 @@
-import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav} from './ui.js';
+import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav, startUpdateEditor} from './ui.js';
 import {sendNoteToServer, getNotesFromServer, pinNote, loadPage, refreshNotes} from './fetch.js';
 import { BASE } from './main.js';
 import { views } from './views.js';
@@ -8,17 +8,19 @@ export function reInitPage(viewKey) {
         initHome();
     } else if (viewKey === 'pinned') {
         initPinned();
+    } else if (viewKey === 'archive') {
+        initArchive();
     }
 }
 
 export function initHome() {
     startEditor();
+    startUpdateEditor();
     refreshNotes();
-
-
 }
 
 export function initPinned() {
+    startUpdateEditor();
     refreshNotes();
 
     $(document).on('click', '.pinNote', async (e) => {
@@ -47,4 +49,8 @@ export function initPinned() {
         }
     });
 }
- 
+
+export function initArchive() {
+    startUpdateEditor();
+    refreshNotes();
+}

@@ -1,4 +1,5 @@
 let quill;
+let quill2;
 
 export function startEditor() {
     quill = new Quill('#editorContainer', {
@@ -10,7 +11,32 @@ export function startEditor() {
             ]
         }
     });
-    $('.ql-toolbar').hide();
+    $('#createField .ql-toolbar').hide();
+}
+
+export function startUpdateEditor() {
+    quill2 = new Quill('#editorUpdateContainer', {
+        theme: 'snow',
+        placeholder: 'Write Content',
+        modules : {
+            toolbar: [
+                ['bold', 'italic', { 'list': 'ordered'}, { 'list': 'bullet' }, 'clean'],
+            ]
+        }
+    });
+}
+
+export function loadDataToUpdate(data) {
+    $('#noteUpdateTitle').val(data.title);
+    quill2.root.innerHTML = data.content;
+    $('#noteUpdateType').val(data.type);
+    $('#taskUpdateDeadline').val(data.deadline) || "";
+    $('#updateField').data('note-id', data.ID);
+    $('#updateField').data('note-status', data.status);
+}
+
+export function resetDataToUpdate(data) {
+
 }
 
 export function getCreationNoteData() {
@@ -36,7 +62,7 @@ export function collapseEditor() {
     $("#noteTypeSwitch").addClass('note-hidden');
     $("#noteSubmit").addClass('note-hidden');
     $("#editorContainer").addClass('note-hidden');
-    $('.ql-toolbar').hide();
+    $('#createField .ql-toolbar').hide();
     $("#dateSubDiv").addClass('note-hidden');
 
     $("#noteTitle").val("");
@@ -45,22 +71,22 @@ export function collapseEditor() {
 }
 
 
-export function setTaskMode() {
-    $("#noteTypeSwitch").text('Task');
-    $("#noteTypeSwitch").removeClass('bg-emerald-300/70');
-    $("#noteTypeSwitch").addClass('bg-amber-300/70');
+export function setTaskMode(noteTypeSwitch, taskDeadlineText) {
+    noteTypeSwitch.text('Task');
+    noteTypeSwitch.removeClass('bg-emerald-300/70');
+    noteTypeSwitch.addClass('bg-amber-300/70');
 
-    $("#taskDeadlineText").removeClass('note-hidden');
+    taskDeadlineText.removeClass('note-hidden');
 
 }
 
-export function setNoteMode() {
-    $("#noteTypeSwitch").text('Note');
-    $("#noteTypeSwitch").removeClass('bg-amber-300/70');
-    $("#noteTypeSwitch").addClass('bg-emerald-300/70');
-    $("#taskDeadlineText").addClass('note-hidden');
+export function setNoteMode(noteTypeSwitch, taskDeadlineText, taskDeadline) {
+    noteTypeSwitch.text('Note');
+    noteTypeSwitch.removeClass('bg-amber-300/70');
+    noteTypeSwitch.addClass('bg-emerald-300/70');
+    taskDeadlineText.addClass('note-hidden');
 
-    $("#taskDeadline").val('');
+    //taskDeadline.val('');
 }
 
 export function openCreateModal(){
@@ -122,6 +148,7 @@ export function renderNotes(note) {
     let typeColor = 'text-white';
     let deadlineColor = 'text-lime-600';
     let pinFill = 'fill-none';
+    let isArchive;
     let pinned = false;
     const noteType = note.type || "";
     if (noteType === 'task') {
@@ -138,6 +165,11 @@ export function renderNotes(note) {
         pinFill = 'fill-none';
         pinned = false;
     }
+    if (note.status === 'archive') {
+        isArchive = true;
+    } else {
+        isArchive = false;
+    }
     let deadlineHTML = '';
 
     if (isTask && note.deadline) {
@@ -153,7 +185,6 @@ export function renderNotes(note) {
                             <!-- bottom section -->
                              <div class="flex mx-1 h-8 gap-2 items-center justify-between">
                                 <span class="select-none font-montserrat font-semibold uppercase text-sm ${deadlineColor}"><span>${note.deadline}</span></span>
-                                <span class="select-none font-ubuntu font-medium uppercase text-md text-sky-200">${note.taskStatus || ''}</span>
                              </div>`;
     }
 
@@ -182,10 +213,14 @@ export function renderNotes(note) {
                         </div>
                     </div>
     ` 
-    if (pinned) {
-        $(noteHTML).appendTo($('#pinnedNotes'));
-    } else {
-        $(noteHTML).appendTo($('#recentNotes'));
+    if (!isArchive) {
+        if (pinned) {
+            $(noteHTML).appendTo($('#pinnedNotes'));
+        } else {
+            $(noteHTML).appendTo($('#recentNotes'));
+        }   
+    } else if (isArchive) {
+        $(noteHTML).appendTo($('#archiveNotes'));
     }
 }
 
@@ -201,4 +236,25 @@ export function updateNav(url){
 
     $('.nav-mobile').removeClass('text-white bg-gray-950/25').addClass('text-zinc-400');
     $(`.nav-mobile[data-view="${url}"]`).removeClass('text-zinc-400').addClass('text-white bg-gray-950/25');
+}
+
+
+export function openUpdateModal(){
+
+    $('#updateModal').removeClass('opacity-0 pointer-events-none').addClass('opacity-100 pointer-events-auto');
+    $('#updateCreate').removeClass('opacity-0 scale-95').addClass('opacity-100 scale-100');
+
+    $('body').removeClass('overflow-y-auto');
+    $('body').addClass('overflow-y-hidden');
+
+}
+
+export function closeUpdateModal(){
+
+    $('#updateModal').removeClass('opacity-100 pointer-events-auto').addClass('opacity-0 pointer-events-none');
+    $('#updateCreate').removeClass('opacity-100 scale-100').addClass('opacity-0 scale-95');
+
+    $('body').removeClass('overflow-y-hidden');
+    $('body').addClass('overflow-y-auto');
+
 }

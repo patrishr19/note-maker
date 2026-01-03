@@ -96,10 +96,8 @@
 
     function fetchNotes() {
         global $db;
-        $status = 'active';
-        $sql = "SELECT * FROM note WHERE status = :status ORDER BY created_date DESC";
+        $sql = "SELECT * FROM note ORDER BY created_date DESC";
         $comm = $db->prepare($sql);
-        $comm->bindParam(":status", $status, PDO::PARAM_STR);
         $comm->execute();
 
         $notes = $comm->fetchAll(PDO::FETCH_ASSOC);
@@ -114,7 +112,6 @@
                 $comm->execute();
                 $taskData = $comm->fetch(PDO::FETCH_ASSOC);
                 $item['deadline'] = $taskData['deadline'];
-                $item['taskStatus'] = $taskData['status'];
             }
             $fullNotes[] = $item;
         }
@@ -166,4 +163,100 @@
         ]);
         exit;
     }
+
+    function fetchSingleNote($id) {
+        global $db;
+    
+        if (!filter_var($id, FILTER_VALIDATE_INT)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Failed to fetch note"
+            ]);
+            exit;
+        }
+
+        $sql = "SELECT * FROM note WHERE ID = :id";
+        $comm = $db->prepare($sql);
+        $comm->bindParam(':id', $id, PDO::PARAM_INT);
+        $comm->execute();
+
+        $note = $comm->fetch(PDO::FETCH_ASSOC);
+        $fullNote = "";
+        if ($note['type'] === 'task') {
+            $sql = "SELECT * FROM task WHERE note_ID = :id";
+            $comm = $db->prepare($sql);
+            $comm->bindParam(":id", $id, PDO::PARAM_INT);
+            $comm->execute();
+            $taskData = $comm->fetch(PDO::FETCH_ASSOC);
+            $note['deadline'] = $taskData['deadline'];
+        }
+        $fullNote = $note;
+
+        echo json_encode([
+            "status" => "success",
+            "data" => $fullNote
+        ]);
+        exit;
+    }
+
+    function deleteNote($id) {
+        global $db;
+
+        if (!filter_var($id, FILTER_VALIDATE_INT)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Failed to delete"
+            ]);
+            exit;
+        }
+        $sql = "SELECT type FROM note WHERE ID = :id";
+        $comm = $db->prepare($sql);
+        $comm->bindParam(":id", $id, PDO::PARAM_INT);
+        $comm->execute();
+        $type = $comm->fetch(PDO::FETCH_ASSOC);
+        
+        $sql = "DELETE FROM note WHERE ID = :id";
+        $comm = $db->prepare($sql);
+        $comm->bindParam(":id", $id, PDO::PARAM_INT);
+        $comm->execute();
+
+        if ($type === 'task') {
+            $sql = "DELETE FROM task WHERE note_ID = :id";
+            $comm = $db->prepare($sql);
+            $comm->bindParam(":id", $id, PDO::PARAM_INT);
+            $comm->execute();
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Note deleted"
+        ]);
+        exit;
+    }
+
+    function archiveNote($id, $status) {
+        global $db;
+
+        if (!filter_var($id, FILTER_VALIDATE_INT)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Failed to delete"
+            ]);
+            exit;
+        }
+
+        $sql = "UPDATE note SET status = :status WHERE ID = :id";
+        $comm = $db->prepare($sql);
+        $comm->bindParam(":status", $status, PDO::PARAM_STR);
+        $comm->bindParam(":id", $id, PDO::PARAM_INT);
+        $comm->execute();
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Note deleted"
+        ]);
+        exit;
+    }
+
+
 ?>

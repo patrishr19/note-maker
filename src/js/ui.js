@@ -35,8 +35,14 @@ export function loadDataToUpdate(data) {
     $('#updateField').data('note-status', data.status);
 }
 
-export function resetDataToUpdate(data) {
-
+export function getUpdateData() {
+    return {
+        title: $('#noteUpdateTitle').val(),
+        content: quill2.root.innerHTML,
+        type: $('#noteUpdateType').val(),
+        deadline: $('#taskUpdateDeadline').val() || '',
+        status: $('#updateField').data('note-status')
+    }
 }
 
 export function getCreationNoteData() {

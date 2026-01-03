@@ -49,12 +49,10 @@ export async function refreshNotes() {
         const result = await getNotesFromServer();
         const notes = result.data;
         //console.log(notes);
-        
         if (result.status === 'success') {
             $('#recentNotes').empty();
             $('#pinnedNotes').empty();
             $('#archiveNotes').empty();
-            
             notes.sort((a, b) => new Date(b.created_date) - new Date(a.created_date)); // Serazeni podle datum
             notes.forEach(note => {
                 renderNotes(note);
@@ -65,9 +63,9 @@ export async function refreshNotes() {
     }
 }
 export function loadPage(url, pushState = true, replace = false) {
-    let viewKey = url.replace(BASE, '').replace(/\//g, '') || 'home';
+    let viewKey = url.replace(BASE, '').replace(/\//g, '') || 'register';
     if (viewKey === 'index.html') {
-        viewKey = 'home';
+        viewKey = 'register';
     }
 
     const view = views[viewKey];
@@ -76,11 +74,16 @@ export function loadPage(url, pushState = true, replace = false) {
         console.log('Page not found', viewKey);
         return;
     }
+    if (viewKey === 'login' || viewKey === 'register') {
+        $('#mainNavbar, #sidebar').addClass('hidden');
+    } else {
+        $('#mainNavbar, #sidebar').removeClass('hidden');
+    }
 
     $('#contentContainer').html(view.content);
     $('#dynamic').html(view.dynamic);
-
-    const fullUrl = viewKey === 'home' ? `${BASE}/` : `${BASE}/${viewKey}`;
+    
+    const fullUrl = viewKey === 'register' ? `${BASE}/` : `${BASE}/${viewKey}`;
 
     if (replace) {
         window.history.replaceState({}, '',fullUrl);
@@ -134,5 +137,58 @@ export async function archiveNote(id, status) {
         })
     });
     
+    return await response.json();
+}
+
+export async function updateNote(id, data) {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'updateNote',
+            note_id: id,
+            ...data
+        })
+    });
+
+    return await response.json();
+}
+
+
+export async function register(formData) {
+    formData.append('action', 'register');
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        body: formData
+    });
+    return await response.json();
+}
+
+export async function login(data) {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'login',
+            ...data
+        })
+    });
+    return await response.json();
+}
+
+export async function logout() {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'logout'
+        })
+    });
     return await response.json();
 }

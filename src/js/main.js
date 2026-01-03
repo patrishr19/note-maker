@@ -1,19 +1,25 @@
-import {sendNoteToServer, getNotesFromServer, pinNote, loadPage, refreshNotes, fetchSingleNote, deleteNote, archiveNote} from './fetch.js';
-import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav, openUpdateModal, closeUpdateModal, loadDataToUpdate} from './ui.js';
+import {sendNoteToServer, getNotesFromServer, pinNote, loadPage, refreshNotes, fetchSingleNote, deleteNote, archiveNote, updateNote, register, login, logout} from './fetch.js';
+import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav, openUpdateModal, closeUpdateModal, loadDataToUpdate, getUpdateData} from './ui.js';
 import {reInitPage, initHome, initPinned} from './init.js';
 import { views } from './views.js';
 
 export const BASE = '/note-maker';
 
 $(document).ready(() => {
+    const user = localStorage.getItem('user');
+
     function getPath(path) {
-        return path.replace(BASE, '').replace(/\//g, '') || 'home';
+        return path.replace(BASE, '').replace(/\//g, '') || 'register';
     }
     const initialView = getPath(window.location.pathname);
-    const valid = ['home', 'pinned', 'archive', 'profile', 'preferences'];
+    const valid = ['home', 'pinned', 'archive', 'profile', 'preferences', 'login', 'register'];
     
-    if (!valid.includes(initialView)) {
+    if (!user && (initialView !== 'login' || initialView !== 'register') ) {
+        loadPage('login', false, true);
+    } else if (user && (initialView === 'login' || initialView === 'register')) {
         loadPage('home', false, true);
+    } else if (!valid.includes(initialView)) {
+        loadPage('login', false, true);
     } else {
         loadPage(initialView, false);
     }
@@ -22,6 +28,11 @@ $(document).ready(() => {
         e.preventDefault();
         let url = $(e.currentTarget).attr('href');
         const viewKey = getPath(url);
+
+        if (!localStorage.getItem('user') && (viewKey !== 'login' || viewKey !== 'register')) {
+            loadPage('login');
+            return;
+        }
 
         const currentPath = getPath(window.location.pathname);
 
@@ -34,8 +45,11 @@ $(document).ready(() => {
         const path = getPath(window.location.pathname);
         loadPage(path, false);
     }
+    if (user) {
+        const pfp = JSON.parse(user).pfp;
+        $('#profilePictureUrl, #profilePictureMain').attr('src', `${BASE}/src/uploads/${pfp}`);
+    }
 
-  
     // #region All pages
     $(document).off('click').on('click', (e) => {
         const isInsideMore = $(e.target).closest('#toggleMoreOptions').length > 0;
@@ -91,6 +105,7 @@ $(document).ready(() => {
             const clickedSwitch = $(e.target).closest('#noteUpdateTypeSwitch').length > 0;
             const clickedDelete = $(e.target).closest('#noteUpdateDelete').length > 0;
             const clickedArchive = $(e.target).closest('#noteUpdateArchive').length > 0;
+            const clickedUpdate = $(e.target).closest('#noteUpdateSubmit').length > 0;
             if (clickedCard) {
                 let note;
                 const targetNote = $(e.target).closest('.noteCard');
@@ -160,6 +175,21 @@ $(document).ready(() => {
                         }
                     } catch (error) {
                         console.error('Failed', error)
+                    }
+                }
+                if (clickedUpdate) {
+                    const id = $('#updateField').data('note-id');
+                    const updateData = getUpdateData();
+
+                    try {
+                        const result = await updateNote(id, updateData);
+
+                        if (result.status === 'success') {
+                            refreshNotes();
+                            closeUpdateModal();
+                        }
+                    } catch (error) {
+                        console.error('Failed', error);
                     }
                 }
                 if (!insideUpdateField) {
@@ -260,7 +290,63 @@ $(document).ready(() => {
 
 
     // #endregion
+    // #region Login/Register
 
+    $(document).on('submit', '#registerForm', async (e) => {
+        e.preventDefault();
+        
+        if ($('#password').val() !== $('#passRepeat').val()) {
+            alert("Passwords do not match!");
+            return;
+        }
+        const formData = new FormData(e.target); // vezme vsechny inputy
+
+        try {
+            const result = await register(formData);
+            const message = result.message;
+            console.log(message);
+        } catch (error) {
+            console.error('Failed at register', error)
+        }
+    });
+
+    $(document).on('submit', '#loginForm', async (e) => {
+        e.preventDefault();
+
+        const data = {
+            email: $('#email').val(),
+            password: $('#password').val()
+        }
+        try {
+            const result = await login(data);
+            const message = result.message;
+            console.log(message);
+            if (result.status === 'success') {
+                localStorage.setItem('user', JSON.stringify(result.user));
+
+                loadPage('home');
+            }
+        } catch (error) {
+            console.error('Failed at logging in', error)
+        }
+    })
+
+    $(document).on('click', '#logoutBtn', async (e) => {
+        e.preventDefault();
+
+        try {
+            const result = await logout();
+            const message = result.message;
+            console.log(message);
+
+            localStorage.removeItem('user');
+
+            loadPage('login', false, true);
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
+    })
+    // #endregion
 });
 
 // PRomenit vsechny stranky na funkce napr initHomePage() kde nahazime vsechny event listenery, + initGlobalPage() na navbar, profile dropdown atd.

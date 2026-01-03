@@ -1,4 +1,33 @@
 export const views = {
+    login: {
+        content: `
+            <form id="loginForm" class='text-white'>
+                <input type="email" name="email" id="email" placeholder="Email">
+                <input type="password" name="password" id="password" placeholder="Password">
+                <button type="submit">Login</button>
+            </form>
+        `,
+        dynamic: ``
+    },
+    register: {
+        content: `
+            <form id="registerForm" enctype="multipart/form-data" class='text-white'>
+                <div class="profile-pic-section">
+                    <label for="profilePic">Profile Picture</label>
+                    <input type="file" name="profilePic" id="profilePic" accept="image/*">
+                </div>
+
+                <input type="text" name="firstName" id="firstName" placeholder="First Name">
+                <input type="text" name="lastName" id="lastName" placeholder="Last Name">
+                <input type="email" name="email" id="email" placeholder="Email">
+                <input type="password" name="password" id="password" placeholder="Password">
+                <input type="password" name="passRepeat" id="passRepeat" placeholder="Repeat Password">
+                
+                <button type="submit">Register</button>
+            </form>
+        `,
+        dynamic: ``
+    },
     home: {
         content: `
             <!-- desktop create -->
@@ -178,7 +207,7 @@ export const views = {
             <div class="flex flex-col justify-self-center rounded-xl bg-zinc-700 min-h-60 w-full md:w-3/4 lg:w-1/2 shadow-2xl outline outline-white/10 -outline-offset-1 py-2 px-4">
                 <div class="flex flex-col items-center gap-3 mt-2">
                     <div id="profilePicturePlaceholder" class="relative md:size-48 size-32 select-none rounded-full outline outline-white/10">
-                            <img class="size-full rounded-full object-cover" src="https://i.ibb.co/tw4whtRs/phil-Mahar.jpg" alt="Profile Picture">
+                            <img class="size-full rounded-full object-cover" alt="Profile Picture" id='profilePictureMain'>
                     </div>
                     <div class="flex flex-col gap-4 w-full px-3">
                         <div class="relative flex">

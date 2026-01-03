@@ -36,17 +36,19 @@
 
     function insertNote($data) {
         global $db;
+        $userID = $_SESSION['user_id'];
 
         $status = 'active';
         $result = false;
 
         // NOTE
-        $sql = 'INSERT INTO note (title, content, type, status) VALUES (:title, :content, :type, :status)';
+        $sql = 'INSERT INTO note (title, content, type, status, user_ID) VALUES (:title, :content, :type, :status, :uid)';
         $comm = $db->prepare($sql);
         $comm->bindParam(":title", $data['title'], PDO::PARAM_STR);
         $comm->bindParam(":content", $data['content'], PDO::PARAM_STR);
         $comm->bindParam(":type", $data['type'], PDO::PARAM_STR);
         $comm->bindParam(":status", $status, PDO::PARAM_STR);
+        $comm->bindParam(":uid", $userID, PDO::PARAM_INT);
 
         if($comm->execute()) {
             $result = true;
@@ -63,12 +65,10 @@
 
         // EXTRA TASK ATR
         if ($data['type'] === 'task' && $result == true) {
-            $state = 'to do';
-            $sql = 'INSERT INTO task (note_ID, deadline, status) VALUES (:note_id, :deadline, :status)';
+            $sql = 'INSERT INTO task (note_ID, deadline) VALUES (:note_id, :deadline)';
             $comm = $db->prepare($sql);
             $comm->bindParam(":note_id", $lastID, PDO::PARAM_INT);
             $comm->bindParam(":deadline", $data['deadline'], PDO::PARAM_STR);
-            $comm->bindParam(":status", $state, PDO::PARAM_STR);
             
             if ($comm->execute()) {
                 $result = true;
@@ -88,16 +88,19 @@
         }
 
         echo json_encode([
-        "status" => "success",
-        "message" => "Data inserted"
-        ]);
+            "status" => "success",
+            "message" => "Data inserted"
+            ]);
         exit;
     }
 
     function fetchNotes() {
         global $db;
-        $sql = "SELECT * FROM note ORDER BY created_date DESC";
+        $userID = $_SESSION['user_id'];
+
+        $sql = "SELECT * FROM note WHERE user_ID = :uid ORDER BY created_date DESC";
         $comm = $db->prepare($sql);
+        $comm->bindParam(':uid', $userID, PDO::PARAM_INT);
         $comm->execute();
 
         $notes = $comm->fetchAll(PDO::FETCH_ASSOC);
@@ -111,7 +114,7 @@
                 $comm->bindParam(":note_id", $note_id, PDO::PARAM_INT);
                 $comm->execute();
                 $taskData = $comm->fetch(PDO::FETCH_ASSOC);
-                $item['deadline'] = $taskData['deadline'];
+                $item['deadline'] = $taskData['deadline'] ?? '';
             }
             $fullNotes[] = $item;
         }
@@ -125,6 +128,7 @@
 
     function pinNotes($id, $isPinned) {
         global $db;
+        $userID = $_SESSION['user_id'];
 
         $noteID = $id ?? '';
         $pinned = $isPinned ?? '';
@@ -140,10 +144,11 @@
         }
         $newPin = (int)$pinned == 0 ? 1 : 0;
  
-        $sql = "UPDATE note SET is_pinned = :pin WHERE ID = :id";
+        $sql = "UPDATE note SET is_pinned = :pin WHERE ID = :id AND user_ID = :uid";
         $comm = $db->prepare($sql);
         $comm->bindParam(':pin', $newPin, PDO::PARAM_INT);
         $comm->bindParam(':id', $noteID, PDO::PARAM_INT);
+        $comm->bindParam(':uid', $userID, PDO::PARAM_INT);
 
         if ($comm->execute()) {
             $result = true;
@@ -166,7 +171,8 @@
 
     function fetchSingleNote($id) {
         global $db;
-    
+        $userID = $_SESSION['user_id'];
+
         if (!filter_var($id, FILTER_VALIDATE_INT)) {
             echo json_encode([
                 "status" => "error",
@@ -175,9 +181,10 @@
             exit;
         }
 
-        $sql = "SELECT * FROM note WHERE ID = :id";
+        $sql = "SELECT * FROM note WHERE ID = :id AND user_ID = :uid";
         $comm = $db->prepare($sql);
         $comm->bindParam(':id', $id, PDO::PARAM_INT);
+        $comm->bindParam(':uid', $userID, PDO::PARAM_INT);
         $comm->execute();
 
         $note = $comm->fetch(PDO::FETCH_ASSOC);
@@ -188,7 +195,7 @@
             $comm->bindParam(":id", $id, PDO::PARAM_INT);
             $comm->execute();
             $taskData = $comm->fetch(PDO::FETCH_ASSOC);
-            $note['deadline'] = $taskData['deadline'];
+            $note['deadline'] = $taskData['deadline'] ?? '';
         }
         $fullNote = $note;
 
@@ -201,6 +208,7 @@
 
     function deleteNote($id) {
         global $db;
+        $userID = $_SESSION['user_id'];
 
         if (!filter_var($id, FILTER_VALIDATE_INT)) {
             echo json_encode([
@@ -209,15 +217,17 @@
             ]);
             exit;
         }
-        $sql = "SELECT type FROM note WHERE ID = :id";
+        $sql = "SELECT type FROM note WHERE ID = :id AND user_ID = :uid";
         $comm = $db->prepare($sql);
         $comm->bindParam(":id", $id, PDO::PARAM_INT);
+        $comm->bindParam(":uid", $userID, PDO::PARAM_INT);
         $comm->execute();
         $type = $comm->fetch(PDO::FETCH_ASSOC);
         
-        $sql = "DELETE FROM note WHERE ID = :id";
+        $sql = "DELETE FROM note WHERE ID = :id AND user_ID = :uid";
         $comm = $db->prepare($sql);
         $comm->bindParam(":id", $id, PDO::PARAM_INT);
+        $comm->bindParam(":uid", $userID, PDO::PARAM_INT);
         $comm->execute();
 
         if ($type === 'task') {
@@ -236,6 +246,7 @@
 
     function archiveNote($id, $status) {
         global $db;
+        $userID = $_SESSION['user_id'];
 
         if (!filter_var($id, FILTER_VALIDATE_INT)) {
             echo json_encode([
@@ -245,10 +256,11 @@
             exit;
         }
 
-        $sql = "UPDATE note SET status = :status WHERE ID = :id";
+        $sql = "UPDATE note SET status = :status WHERE ID = :id AND user_ID = :uid";
         $comm = $db->prepare($sql);
         $comm->bindParam(":status", $status, PDO::PARAM_STR);
         $comm->bindParam(":id", $id, PDO::PARAM_INT);
+        $comm->bindParam(":uid", $userID, PDO::PARAM_INT);
         $comm->execute();
 
         echo json_encode([
@@ -258,5 +270,45 @@
         exit;
     }
 
+    function updateNote($id, $data) {
+        global $db;
+        $userID = $_SESSION['user_id'];
 
+        if (!filter_var($id, FILTER_VALIDATE_INT)) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Failed to delete"
+            ]);
+            exit;
+        }
+
+        $sql = "UPDATE note SET title = :title, content = :content, type = :type WHERE ID = :id AND user_ID = :uid";
+        $comm = $db->prepare($sql);
+        $comm->bindParam(":title", $data['title'], PDO::PARAM_STR);
+        $comm->bindParam(":content", $data['content'], PDO::PARAM_STR);
+        $comm->bindParam(":type", $data['type'], PDO::PARAM_STR);
+        $comm->bindParam(":id", $id, PDO::PARAM_INT);
+        $comm->bindParam(":uid", $userID, PDO::PARAM_INT);
+        $comm->execute();
+
+        if ($data['type'] === 'task') {
+            $sql = "INSERT INTO task (note_ID, deadline) VALUES (:note_ID, :deadline) ON DUPLICATE KEY UPDATE deadline = :deadline2"; // pokud tam uz je tak jenom update deadlinu
+            $comm = $db->prepare($sql);
+            $comm->bindParam(':note_ID', $id, PDO::PARAM_INT);
+            $comm->bindParam(':deadline', $data['deadline'], PDO::PARAM_STR);
+            $comm->bindParam(':deadline2', $data['deadline'], PDO::PARAM_STR);
+            $comm->execute();
+        } else {
+            $sql = "DELETE FROM task WHERE note_ID = :note_id";
+            $comm = $db->prepare($sql);
+            $comm->bindParam(':note_id', $id, PDO::PARAM_INT);
+            $comm->execute();
+        }
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Note updated"
+        ]);
+        exit;
+    }
 ?>

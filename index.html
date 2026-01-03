@@ -25,7 +25,7 @@
 </head>
 <body>
     <div class="h-dvh flex flex-col overflow-hidden bg-zinc-800" id="mainContainer">
-        <nav class="relative bg-zinc-700 z-2">
+        <nav class="relative bg-zinc-700 z-2" id="mainNavbar">
             <div class="mx-auto px-2 sm:px-6 lg:px-8">
                 <div class="relative flex items-center justify-between h-16">
                     <div class="flex flex-1 items-center justify-start ml-2 sm:ml-0 sm:items-stretch sm:justify-start">
@@ -53,7 +53,7 @@
                             <button id="toggleMoreOptions" class="relative flex rounded-full cursor-pointer transition-all transform hover:scale-105">
                                 <span class="absolute -inset-1.5"></span>
                                 <span class="sr-only"></span>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png?20170328184010" alt="Profile Picture" class="size-8 rounded-full bg-gray-800 ">
+                                <img id="profilePictureUrl" alt="Profile Picture" class="size-8 rounded-full bg-gray-800 ">
                             </button>
                             <div id="moreOptions" class="absolute top-full mt-6 right-0 text-white flex flex-col p-2 z-50 bg-zinc-700 w-[calc(100vw-6rem)] sm:w-42 min-h-12 rounded-xl gap-1 shadow-lg outline outline-white/20 -outline-offset-1 opacity-0 transition-all ease-in-out duration-300 transform scale-95 pointer-events-none">
                                 <a href="/note-maker/profile" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra" data-view="profile">
@@ -66,10 +66,10 @@
                                     <span class="font-ubuntu font-light text-sm">Preferences</span>
                                 </a>
                                 <div class="h-px bg-zinc-400/60"></div>
-                                <a href="/note-maker/home" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra" data-view="home">
+                                <button type="button" class="flex justify-start items-center text-gray-400 gap-2 hover:text-white transition-all transform hover:scale-102 nav-link nav-extra" id="logoutBtn" data-view="logout">
                                     <svg class="size-6 stroke-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
                                     <span class="font-ubuntu font-light text-sm">Log out</span>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>

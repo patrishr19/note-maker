@@ -1,4 +1,7 @@
 <?php
+
+    session_start();
+
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type");
@@ -15,14 +18,18 @@
     }
 
     $json = file_get_contents('php://input');
-    $data = json_decode($json, true);
+    $data = json_decode($json, true) ?? $_POST;
 
+    
     if (!isset($data['action']) || empty($data['action'])) {
         echo "Bad Request";
         exit(header("location: http://localhost/note-maker/"));
     }
 
-    $action = $data['action'];
+    $action = $data['action'] ?? '';
+    if ($action !== 'login' && $action !== 'register') {
+        checkAuth();
+    }
 
     switch ($action) {
         case 'createNote':
@@ -34,7 +41,7 @@
             fetchNotes();
 
             break;
-        case 'pinNotes';
+        case 'pinNotes':
             pinNotes($data['noteID'], $data['isPinned']);
             
             break;
@@ -48,6 +55,22 @@
         case 'archiveNote':
             $newStatus = $data['status'] === 'active' ? 'archive' : 'active';
             archiveNote($data['note_id'], $newStatus);
+
+            break;
+        case 'updateNote':
+            $validData = checkNoteInput($data);
+            updateNote($data['note_id'], $data);
+
+            break;
+        case 'register':
+            register($data, $_FILES);
+            break;
+        case 'login':
+            login($data);
+
+            break;
+        case 'logout':
+            logout();
 
             break;
         default:

@@ -1,3 +1,5 @@
+import {BASE} from './main.js';
+
 let quill;
 let quill2;
 
@@ -35,12 +37,18 @@ export function loadDataToUpdate(data) {
     $('#updateField').data('note-status', data.status);
 }
 
+export function loadUserData(user) {
+    $('#firstProfileName').val(hsc(user.first_name));
+    $('#lastProfileName').val(hsc(user.last_name));
+    $('#profileEmail').val(hsc(user.email));
+}
+
 export function getUpdateData() {
     return {
-        title: $('#noteUpdateTitle').val(),
+        title: hsc($('#noteUpdateTitle').val()),
         content: quill2.root.innerHTML,
-        type: $('#noteUpdateType').val(),
-        deadline: $('#taskUpdateDeadline').val() || '',
+        type: hsc($('#noteUpdateType').val()),
+        deadline: hsc($('#taskUpdateDeadline').val()) || '',
         status: $('#updateField').data('note-status')
     }
 }
@@ -149,7 +157,9 @@ export function closeMoreOptions() {
 
 export function renderNotes(note) {
     //console.log(note);
-
+    const isCompact = localStorage.getItem('compactMode') === 'true';
+    const minH = isCompact ? 'min-h-28 h-auto' : 'min-h-60 h-full';
+    const clamp = isCompact ? 'line-clamp-2' : 'line-clamp-6';
     let isTask = false;
     let typeColor = 'text-white';
     let deadlineColor = 'text-lime-600';
@@ -190,28 +200,28 @@ export function renderNotes(note) {
                             <div class="h-px bg-white/50"></div>
                             <!-- bottom section -->
                              <div class="flex mx-1 h-8 gap-2 items-center justify-between">
-                                <span class="select-none font-montserrat font-semibold uppercase text-sm ${deadlineColor}"><span>${note.deadline}</span></span>
+                                <span class="select-none font-montserrat font-semibold uppercase text-sm ${deadlineColor}"><span>${hsc(note.deadline)}</span></span>
                              </div>`;
     }
 
     const noteHTML = `
-        <div class="min-h-60 h-full bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer noteCard" data-note-id='${note.ID}' data-pinned='${note.is_pinned}'>
+        <div class="${minH} bg-zinc-700 rounded-md p-2 border border-zinc-600 transition-all flex hover:scale-103 cursor-pointer noteCard" data-note-id='${note.ID}' data-pinned='${note.is_pinned}'>
                         <div class="flex flex-1 flex-col min-w-0">
                             <!-- upper section -->
                             <div class="flex mx-1 h-8 gap-2 items-center">
-                                <div class="break-all flex-1 min-w-0 line-clamp-1 font-sans font-medium text-lg text-white/80">
-                                ${note.title}
+                                <div class="break-all flex-1 min-w-0 line-clamp-1 font-sans font-medium text-lg text-white/80 noteCard-title">
+                                ${hsc(note.title)}
                                 </div>
-                                <span class="select-none font-montserrat font-semibold uppercase text-lg tracking-normal ${typeColor}">${note.type}</span>
+                                <span class="select-none font-montserrat font-semibold uppercase text-lg tracking-normal ${typeColor}">${hsc(note.type)}</span>
                                 <button type='button' class="p-1 cursor-pointer rounded-md hover:bg-zinc-800 transition-all pinNote">
-                                    <svg class="size-6 stroke-white ${pinFill}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
+                                    <svg class="size-6 stroke-white ${pinFill}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="SVGRepo_bgCarrier" stroke-width="0"></g><g class="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g class="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
                                 </button>
                             </div>
                             <!-- divider -->
                             <div class="h-px bg-white/50"></div>
                             <!-- task content -->
                             <div class="mx-1 mt-1 flex-1">
-                                <div class="break-all line-clamp-6 text-md font-light font-notoSans text-zinc-100">
+                                <div class="break-all ${clamp} text-md font-light font-notoSans text-zinc-100 noteCard-content">
                                     ${note.content}
                                 </div>
                             </div>
@@ -262,5 +272,133 @@ export function closeUpdateModal(){
 
     $('body').removeClass('overflow-y-hidden');
     $('body').addClass('overflow-y-auto');
+}
+export function removeAddSearch(state) {
+    const button = $('#searchButton');
+    const restore = $('#restoreSearch');
+    if (state) {
+        button.remove();
+        restore.remove();
+    } else {
+        $('#moreNavbar').prepend(button);
+        $('#moreNavbar').prepend(restore);
+        $(restore).hide();
+    }
+}
 
+
+export function showInfo(message, status) {
+    $('.popup-info').remove();
+
+    const color = {
+        success: 'bg-green-600',
+        error: 'bg-red-700' 
+    }[status];
+
+    const popup = $(`
+        <div class='popup-info fixed top-5 left-1/2 -translate-x-1/2 ${color} text-white font-openSans px-4 z-[100] flex items-center transition-all duration-300 outline rounded-xs outline-zinc-800 opacity-0'>
+            <span>${hsc(message)}</span>
+        </div>
+        `);
+
+    $('body').append(popup);
+
+    setTimeout(() => popup.removeClass('opacity-0'), 10);
+
+    setTimeout(() => {
+        popup.addClass('opacity-0');
+        setTimeout(() => popup.remove(), 300);
+    }, 3000);
+}
+
+
+export function hsc(text) { // nahrada za html special chars ze stack overflow
+    if (!text) {
+        return '';
+    } else {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+}
+
+export function openSearchModal(){
+
+    $('#searchModal').removeClass('opacity-0 pointer-events-none').addClass('opacity-100 pointer-events-auto');
+    $('#searchField').removeClass('opacity-0 scale-95').addClass('opacity-100 scale-100');
+
+    $('body').removeClass('overflow-y-auto');
+    $('body').addClass('overflow-y-hidden');
+
+    setTimeout(() => {
+        $('#searchInput').focus();
+    }, 300);
+}
+
+export function closeSearchModal(){
+
+    $('#searchModal').removeClass('opacity-100 pointer-events-auto').addClass('opacity-0 pointer-events-none');
+    $('#searchField').removeClass('opacity-100 scale-100').addClass('opacity-0 scale-95');
+
+    $('body').removeClass('overflow-y-hidden');
+    $('body').addClass('overflow-y-auto');
+}
+
+export function openPasswordModal() {
+    $('#passwordModal').removeClass('opacity-0 pointer-events-none').addClass('opacity-100 pointer-events-auto');
+    $('#passwordField').removeClass('opacity-0 scale-95').addClass('opacity-100 scale-100');
+
+    $('body').removeClass('overflow-y-auto');
+    $('body').addClass('overflow-y-hidden');
+}
+
+export function closePasswordModal() {
+    $('#passwordModal').removeClass('opacity-100 pointer-events-auto').addClass('opacity-0 pointer-events-none');
+    $('#passwordField').removeClass('opacity-100 scale-100').addClass('opacity-0 scale-95');
+
+    $('body').removeClass('overflow-y-hidden');
+    $('body').addClass('overflow-y-auto');
+
+    $('#currentPassword').val('');
+    $('#newPassword').val('');
+}
+
+export function getPasswordData() {
+    return {
+        currentPassword: $('#currentPassword').val(),
+        newPassword: $('#newPassword').val()
+    }
+}
+
+export function resetPfp() {
+    const userJson = localStorage.getItem('user');
+
+    let pfp = null;
+    if (userJson) {
+        const user = JSON.parse(userJson);
+        pfp = user.profile_picture || user.pfp;
+    }
+
+    if (pfp) {
+        const url = `${BASE}/src/uploads/${pfp}`;
+
+        $('#profilePictureUrl, #profilePictureMain').attr('src', url);
+    }
+}
+
+export function toggleOffline() {
+    if (!navigator.onLine) {
+        $('body').addClass('is-offline');
+        showInfo('You are offline', 'error');
+    } else {
+        $('body').removeClass('is-offline');
+        showInfo('You are online', 'success');
+    }
+}
+
+export function syncPref() {
+    const compactToggle = $('#compactToggle');
+
+    if (compactToggle.length > 0) {
+        const isCompact = localStorage.getItem('compactMode') === 'true';
+        compactToggle.prop('checked', isCompact);
+    }
 }

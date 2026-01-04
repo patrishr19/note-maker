@@ -1,29 +1,55 @@
-import {sendNoteToServer, getNotesFromServer, pinNote, loadPage, refreshNotes, fetchSingleNote, deleteNote, archiveNote, updateNote, register, login, logout} from './fetch.js';
-import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav, openUpdateModal, closeUpdateModal, loadDataToUpdate, getUpdateData} from './ui.js';
+import {sendNoteToServer, getNotesFromServer, pinNote, loadPage, refreshNotes, fetchSingleNote, deleteNote, archiveNote, updateNote, register, login, logout, updateProfile, updatePassword} from './fetch.js';
+import {startEditor, getCreationNoteData, collapseEditor, expandEditor, setNoteMode, setTaskMode, openCreateModal, closeCreateModal, collapsePinned, expandPinned, collapseRecent, expandRecent, openMoreOptions, closeMoreOptions, renderNotes, updateNav, openUpdateModal, closeUpdateModal, loadDataToUpdate, getUpdateData, showInfo, hsc, openSearchModal, closeSearchModal, resetPfp, toggleOffline, loadUserData, openPasswordModal, closePasswordModal, getPasswordData, syncPref} from './ui.js';
 import {reInitPage, initHome, initPinned} from './init.js';
 import { views } from './views.js';
 
 export const BASE = '/note-maker';
 
-$(document).ready(() => {
-    const user = localStorage.getItem('user');
+window.addEventListener('offline', () => {
+    toggleOffline();
+});
 
+window.addEventListener('online', () => {
+    toggleOffline();
+});
+
+$(document).on('click', 'button, a, .pinNote, .noteCard', (e) => {
+    if (!navigator.onLine) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        showInfo('Action disabled', 'error');
+        return false;
+    }
+});
+
+
+$(document).ready(() => {
+    
+    const user = localStorage.getItem('user');
+    const userParse = JSON.parse(user);
+    //console.log(navigator.onLine);
     function getPath(path) {
         return path.replace(BASE, '').replace(/\//g, '') || 'register';
     }
     const initialView = getPath(window.location.pathname);
     const valid = ['home', 'pinned', 'archive', 'profile', 'preferences', 'login', 'register'];
     
-    if (!user && (initialView !== 'login' || initialView !== 'register') ) {
+    if (!user && (initialView !== 'login' && initialView !== 'register') ) {
         loadPage('login', false, true);
-    } else if (user && (initialView === 'login' || initialView === 'register')) {
+        showInfo('Please login', 'error');
+    } else if (user && (initialView === 'login' || initialView === 'register')) {1
         loadPage('home', false, true);
     } else if (!valid.includes(initialView)) {
         loadPage('login', false, true);
+        showInfo('Please login', 'error');
     } else {
         loadPage(initialView, false);
+        if (initialView === 'profile') {
+            loadUserData(userParse);
+        }
     }
-
+    
+    //console.log(user);
     $(document).on('click', '.nav-link', (e) => {
         e.preventDefault();
         let url = $(e.currentTarget).attr('href');
@@ -31,6 +57,7 @@ $(document).ready(() => {
 
         if (!localStorage.getItem('user') && (viewKey !== 'login' || viewKey !== 'register')) {
             loadPage('login');
+            showInfo('Please login', 'error');
             return;
         }
 
@@ -38,6 +65,9 @@ $(document).ready(() => {
 
         if (viewKey !== currentPath) {
             loadPage(viewKey);
+            if (viewKey === 'profile') {
+                loadUserData(userParse);
+            }
         }
     });
 
@@ -46,8 +76,7 @@ $(document).ready(() => {
         loadPage(path, false);
     }
     if (user) {
-        const pfp = JSON.parse(user).pfp;
-        $('#profilePictureUrl, #profilePictureMain').attr('src', `${BASE}/src/uploads/${pfp}`);
+        resetPfp();
     }
 
     // #region All pages
@@ -63,6 +92,58 @@ $(document).ready(() => {
     });
     // #endregion
     // #region Home Page
+
+        $(document).on('click', (e) => {
+            const clickedSearch = $(e.target).closest('#searchButton').length > 0;
+            const isSearchHidden = $('#searchModal').hasClass('opacity-0');
+            const insideSearchField = $(e.target).closest('#searchField').length > 0;
+            if (clickedSearch) {
+                if (isSearchHidden) {   
+                    openSearchModal();
+                } else {
+                    closeSearchModal();
+                }
+                return;
+            }
+            if (!isSearchHidden) {
+                if (!insideSearchField) {
+                    closeSearchModal();
+                }
+            }
+        });
+        $(document).on('keydown', '#searchInput', (e) => {
+            if (e.key === 'Enter' || e.key === 'Escape') {
+                closeSearchModal();
+            }
+        })
+        $(document).on('input', '#searchInput', (e) => {
+            const find = $(e.currentTarget).val().toLowerCase().trim();
+            
+            $('#restoreSearch').toggle(find.length > 0);
+            expandPinned();
+            expandRecent();
+            const notes = $('.noteCard').get();
+            notes.forEach(card => {
+                const $card = $(card);
+
+                const title = $card.find('.noteCard-title').text().toLowerCase();
+                const content = $card.find('.noteCard-content').text().toLowerCase();
+
+                if (title.includes(find) || content.includes(find)) {
+                    $card.show();
+                } else { 
+                    $card.hide();
+                }
+            });
+
+        });
+
+        $(document).on('click', '#restoreSearch', () =>  {
+            $('#searchInput').val('');
+            $('#restoreSearch').hide();
+            $('.noteCard').show();
+        });
+
         $(document).on('click', (e) => {
             const modal = $('#mobileModal');
             const isModalHidden = modal.hasClass('opacity-0'); // Opacity
@@ -98,6 +179,21 @@ $(document).ready(() => {
 
         });
 
+        $(document).on('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey /* mac uzivatele*/) && e.key === 'k') {
+                e.preventDefault();
+
+                const isSearchHidden = $('#searchModal').hasClass('opacity-0');
+
+                if (isSearchHidden) {
+                    openSearchModal();
+                } else {
+                    closeSearchModal();
+                }
+
+            }
+        });
+
         $(document).on('click', async (e) => {
             const clickedCard = $(e.target).closest('.noteCard').length > 0;
             const insideUpdateField = $(e.target).closest('#updateField').length > 0;
@@ -115,7 +211,7 @@ $(document).ready(() => {
                     const result = await fetchSingleNote(noteID);
                     if (result.status === 'success') {
                         note = result.data;
-                        console.log(note);
+                        //console.log(note);
                     }
 
                 } catch (error) {
@@ -158,37 +254,42 @@ $(document).ready(() => {
                         if (result.status === 'success') {
                             refreshNotes();
                             closeUpdateModal();
+                            showInfo('Note deleted', 'success');
                         }
                     } catch (error) {
+                        showInfo('Failed to delete', 'error');
                         console.error('Failed', error)
                     }
                 }
                 if (clickedArchive) {
                     const id = $('#updateField').data('note-id');
                     const status = $('#updateField').data('note-status');
-                    console.log('clik');
                     try {
                         const result = await archiveNote(id, status);
                         if (result.status === 'success') {
                             refreshNotes();
                             closeUpdateModal();
+                            showInfo('Note archived', 'success');
                         }
                     } catch (error) {
+                        showInfo('Failed to archive', 'error');
                         console.error('Failed', error)
                     }
                 }
                 if (clickedUpdate) {
                     const id = $('#updateField').data('note-id');
                     const updateData = getUpdateData();
-
+                
                     try {
                         const result = await updateNote(id, updateData);
 
                         if (result.status === 'success') {
                             refreshNotes();
                             closeUpdateModal();
+                            showInfo('Note updated', 'success');
                         }
                     } catch (error) {
+                        showInfo('Failed to update', 'error');
                         console.error('Failed', error);
                     }
                 }
@@ -207,15 +308,19 @@ $(document).ready(() => {
 
             try {
                 const result = await sendNoteToServer(noteData);
-                console.log(result.status);
-                console.log(result.message);
+                //console.log(result.status);
+                //console.log(result.message);
 
                 if (result.status === 'success') {
                     refreshNotes();
                     collapseEditor();
                     closeCreateModal();
+                    showInfo('Note created', 'success');
+                } else {
+                    showInfo(result.message, 'error');
                 }
             } catch (error) {
+                showInfo('Failed to create', 'error');
                 console.error('Fetch Failed', error)
             }
         });
@@ -269,18 +374,19 @@ $(document).ready(() => {
             try {
                 const result = await pinNote(id, pinned);
                 const message = result.message;
-                console.log(message);
+                //console.log(message);
                 
                 if (result.status === 'success') {
                     const newPin = pinned == 0 ? 1 : 0;
                     note.data('pinned', newPin);
-                    
                     if (newPin === 1) {
                         note.prependTo('#pinnedNotes');
                         note.find('svg').removeClass('fill-none').addClass('fill-white');
+                        showInfo('Note pinned', 'success');
                     } else {
                         note.prependTo('#recentNotes');
                         note.find('svg').removeClass('fill-white').addClass('fill-none');
+                        showInfo('Note unpinned', 'success');
                     }
                 }
             } catch (error) {
@@ -288,15 +394,76 @@ $(document).ready(() => {
             }
         });
 
+    // #endregion
+    // #region Profile page
+    $(document).on('click', (e) => {
+        const clickedToggle = $(e.target).closest('#toggleChangePasswordModal').length > 0;
+        const isModalHidden = $('#passwordModal').hasClass('opacity-0');
+        const isInside = $(e.target).closest('#passwordField').length > 0;
+
+        if (clickedToggle) {
+            if (isModalHidden) {
+                openPasswordModal();
+            } else {
+                closePasswordModal();
+            }
+        }
+
+        if (!isModalHidden) {
+            if (!isInside) {
+                closePasswordModal();
+            }
+        }
+    });
+    $(document).on('submit', '#passwordField', async (e) => {
+        e.preventDefault();
+        const formData = getPasswordData();
+
+        try {
+            const result = await updatePassword(formData);
+            const message = result.message;
+            if (result.status === 'success') {
+                showInfo(result.message, 'success')
+                closePasswordModal();
+            } else {
+                showInfo(result.message, 'error');
+            }
+        } catch (error) {
+            console.error("Failed to update password", error);
+        }
+    });
+
+    $(document).on('submit', '#updateProfileForm', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        try {
+            const result = await updateProfile(formData);
+            const message = result.message;
+
+            if (result.status === 'success') {
+                localStorage.setItem('user', JSON.stringify(result.user));
+
+                resetPfp();
+
+                showInfo(result.message, 'success');
+            } else {
+                showInfo(result.message, 'error');
+            }
+        } catch (error) {
+            console.error('Failed at updating profile', error);
+        }
+    });
 
     // #endregion
+
     // #region Login/Register
 
     $(document).on('submit', '#registerForm', async (e) => {
         e.preventDefault();
         
         if ($('#password').val() !== $('#passRepeat').val()) {
-            alert("Passwords do not match!");
+            showInfo('Passwords do not match', 'error');
             return;
         }
         const formData = new FormData(e.target); // vezme vsechny inputy
@@ -304,7 +471,13 @@ $(document).ready(() => {
         try {
             const result = await register(formData);
             const message = result.message;
-            console.log(message);
+            showInfo(message, result.status);
+
+            if (result.status === 'success') {
+                loadPage('login');
+                showInfo('Registered', 'success');
+            }
+            //console.log(message);
         } catch (error) {
             console.error('Failed at register', error)
         }
@@ -320,11 +493,14 @@ $(document).ready(() => {
         try {
             const result = await login(data);
             const message = result.message;
-            console.log(message);
+            //console.log(message);
+            showInfo(message, result.status);
             if (result.status === 'success') {
                 localStorage.setItem('user', JSON.stringify(result.user));
 
                 loadPage('home');
+                showInfo('Logged in', 'success');
+                resetPfp();
             }
         } catch (error) {
             console.error('Failed at logging in', error)
@@ -337,7 +513,7 @@ $(document).ready(() => {
         try {
             const result = await logout();
             const message = result.message;
-            console.log(message);
+            //console.log(message);
 
             localStorage.removeItem('user');
 
@@ -345,8 +521,16 @@ $(document).ready(() => {
         } catch (error) {
             console.error('Logout failed', error);
         }
-    })
+    });
+    // #endregion
+    // #region pref
+
+    $(document).on('change', '#compactToggle', (e) => {
+        localStorage.setItem('compactMode', e.target.checked);
+
+        refreshNotes();
+    });
+
     // #endregion
 });
 
-// PRomenit vsechny stranky na funkce napr initHomePage() kde nahazime vsechny event listenery, + initGlobalPage() na navbar, profile dropdown atd.

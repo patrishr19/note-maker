@@ -101,9 +101,16 @@
         $sql = "SELECT * FROM note WHERE user_ID = :uid ORDER BY created_date DESC";
         $comm = $db->prepare($sql);
         $comm->bindParam(':uid', $userID, PDO::PARAM_INT);
-        $comm->execute();
+        if ($comm->execute()) {
+            $notes = $comm->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Unauthorized"
+            ]);
+            exit;
+        }
 
-        $notes = $comm->fetchAll(PDO::FETCH_ASSOC);
 
         $fullNotes = [];
         foreach ($notes as $item) { // Uplne Nahovno Zpusob Ale Funguje
@@ -121,6 +128,7 @@
 
         echo json_encode([
             "status" => "success",
+            "message" => "Notes fetched",
             "data" => $fullNotes
         ]);
         exit;

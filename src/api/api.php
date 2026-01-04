@@ -73,6 +73,14 @@
             logout();
 
             break;
+        case 'updateProfile':
+            updateProfile($data, $_FILES);
+
+            break;
+        case 'updatePassword';
+            updatePassword($data);  
+              
+            break;
         default:
             echo json_encode([
                 "status" => "error",

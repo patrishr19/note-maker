@@ -1,30 +1,60 @@
 export const views = {
     login: {
         content: `
-            <form id="loginForm" class='text-white'>
-                <input type="email" name="email" id="email" placeholder="Email">
-                <input type="password" name="password" id="password" placeholder="Password">
-                <button type="submit">Login</button>
-            </form>
+            <div class="fixed top-1/4 translate-y-1/2 flex flex-col justify-self-center rounded-xl bg-zinc-700 min-h-50 w-[90%] md:w-3/4 lg:w-1/2 shadow-2xl outline outline-white/10 -outline-offset-1 py-4 px-8">
+                <form id='loginForm' class="flex flex-col items-center gap-4 mt-2">
+                    <div class="flex flex-col gap-4 w-full px-3">
+                        <div class="relative flex">
+                            <input id="email" name="email" type="email" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="email" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Email</label>
+                        </div>
+                        <div class="relative flex">
+                            <input id="password" name="password" type="password" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="password" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Password</label>
+                        </div>
+                    </div>
+                    <button id="submitLogin" type="submit" class="text-center rounded-lg bg-white/95 min-h-10 w-full font-medium cursor-pointer select-none transition-all transform ease-in-out duration-300 hover:scale-105 font-montserrat">Log in</button>
+                    <a href='/note-maker/register' data-view='register' class='nav-link text-white/60 font-light text-sm font-openSans mt-1 hover:text-white transition-all'>Don't have an account</a>
+                </form>
+            </div>
+
         `,
         dynamic: ``
     },
     register: {
         content: `
-            <form id="registerForm" enctype="multipart/form-data" class='text-white'>
-                <div class="profile-pic-section">
-                    <label for="profilePic">Profile Picture</label>
-                    <input type="file" name="profilePic" id="profilePic" accept="image/*">
-                </div>
-
-                <input type="text" name="firstName" id="firstName" placeholder="First Name">
-                <input type="text" name="lastName" id="lastName" placeholder="Last Name">
-                <input type="email" name="email" id="email" placeholder="Email">
-                <input type="password" name="password" id="password" placeholder="Password">
-                <input type="password" name="passRepeat" id="passRepeat" placeholder="Repeat Password">
-                
-                <button type="submit">Register</button>
-            </form>
+            <div class="flex flex-col justify-self-center translate-y-1/4 rounded-xl bg-zinc-700 min-h-60 w-full md:w-3/4 lg:w-1/2 shadow-2xl outline outline-white/10 -outline-offset-1 py-2 px-4">
+                <form id='registerForm' enctype='multipart/form-data' class="flex flex-col items-center gap-3 mt-2">
+                    <div id="profilePicturePlaceholder" class="relative md:size-48 size-32 select-none rounded-full group overflow-hidden bg-zinc-700 ring-1 ring-white/10">
+                            <img class="size-full rounded-full object-cover cursor-pointer transition-all duration-300 group-hover:scale-105 scale-102" alt="" id='profilePictureMain'>
+                            <span class='sr-only'>Profile Picture</span>
+                            <input type='file' name='profilePic' id='profilePic' accept='image/*' class='absolute inset-0 opacity-0 cursor-pointer'>
+                    </div>
+                    <div class="flex flex-col gap-4 w-full px-3">
+                        <div class="relative flex">
+                            <input id="firstName" name="firstName" type="text" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="firstName" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">First name</label>
+                        </div>
+                        <div class="relative flex">
+                            <input id="lastName" name="lastName" type="text" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="lastName" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Last name</label>
+                        </div>
+                        <div class="relative flex">
+                            <input id="email" name="email" type="email" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="email" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Email</label>
+                        </div>
+                        <div class="relative flex">
+                            <input id="password" name="password" type="password" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="password" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Password</label>
+                        </div>
+                        <div class="relative flex">
+                            <input id="passRepeat" name="passRepeat" type="password" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="passRepeat" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Password Repeat</label>
+                        </div>
+                    </div>
+                    <button id="submitRegister" type="submit" class="text-center rounded-lg bg-white/95 min-h-10 w-full font-medium cursor-pointer select-none transition-all transform ease-in-out duration-300 hover:scale-105 font-montserrat">Register</button>
+                </form>
+            </div>
         `,
         dynamic: ``
     },
@@ -55,12 +85,12 @@ export const views = {
             <div id="pinnedHr" class="flex items-center gap-1 my-2 group">
                 <div class="h-px bg-zinc-600 w-1/18"></div>
                 <div class="flex items-center gap-1 text-zinc-500">
-                    <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
+                    <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="SVGRepo_bgCarrier" stroke-width="0"></g><g class="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g class="SVGRepo_iconCarrier"> <path d="M11.9999 17V21M6.9999 12.6667V6C6.9999 4.89543 7.89533 4 8.9999 4H14.9999C16.1045 4 16.9999 4.89543 16.9999 6V12.6667L18.9135 15.4308C19.3727 16.094 18.898 17 18.0913 17H5.90847C5.1018 17 4.62711 16.094 5.08627 15.4308L6.9999 12.6667Z" stroke-width="1" stroke-linecap="round"></path> </g></svg>
                     <span class="text-lg font-sans select-none">Pinned</span>
                 </div>
                 <div class="h-px bg-zinc-600 flex-1"></div>
                 <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all" id="collapsePinned">
-                    <svg class="size-10 stroke-current fill-current transition-all" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
+                    <svg class="size-10 stroke-current fill-current transition-all" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g class="SVGRepo_bgCarrier" stroke-width="0"></g><g class="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g class="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
                 </button>
             </div>
             <!-- Pinned Notes -->
@@ -72,12 +102,12 @@ export const views = {
                 <div id="recentHr" class="flex items-center gap-1 my-2 group">
                 <div class="h-px bg-zinc-600 w-1/18"></div>
                 <div class="flex items-center gap-1 text-zinc-500">
-                    <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 6V12" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16.24 16.24L12 12" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    <svg class="size-6 stroke-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g class="SVGRepo_bgCarrier" stroke-width="0"></g><g class="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g class="SVGRepo_iconCarrier"> <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 6V12" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16.24 16.24L12 12" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     <span class="text-lg font-sans select-none">Recent</span>
                 </div>
                 <div class="h-px bg-zinc-600 flex-1"></div>
                 <button class="text-zinc-500 cursor-pointer rounded-md hover:text-zinc-100 hover:bg-zinc-700 transition-all" id="collapseRecent">
-                    <svg class="size-10 stroke-current fill-current transition-all" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
+                    <svg class="size-10 stroke-current fill-current transition-all" viewBox="-8.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.00032"><g class="SVGRepo_bgCarrier" stroke-width="0"></g><g class="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g class="SVGRepo_iconCarrier"> <title>angle-down</title> <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path> </g></svg>
                 </button>
             </div>
             <!-- Recent Notes -->
@@ -124,6 +154,11 @@ export const views = {
                     </form>
                 </div>
             </div>
+            <div id="searchModal" class="fixed inset-0 bg-black/20 backdrop-blur-[1px] opacity-0 pointer-events-none transition-all duration-300 flex items-start justify-center pt-40">
+                <div id="searchField" class="bg-zinc-900 w-full max-w-xl mx-4 rounded-lg overflow-hidden -translate-y-10 transition-all transform duration-300 scale-95 opacity-0 outline outline-offset-1 outline-white/50">
+                    <input type="text" id="searchInput" placeholder="Search" class="w-full font-openSans border-none outline-none text-lg font-normal px-4 py-2 text-white/80">
+                </div>
+            </div>
         `
     },
     pinned: {
@@ -160,6 +195,11 @@ export const views = {
                             <input type="hidden" id="noteUpdateType" value="note" name="noteType">
                         </div>
                     </form>
+                </div>
+            </div>
+            <div id="searchModal" class="fixed inset-0 bg-black/20 backdrop-blur-[1px] opacity-0 pointer-events-none transition-all duration-300 flex items-start justify-center pt-40">
+                <div id="searchField" class="bg-zinc-900 w-full max-w-xl mx-4 rounded-lg overflow-hidden -translate-y-10 transition-all transform duration-300 scale-95 opacity-0 outline outline-offset-1 outline-white/50">
+                    <input type="text" id="searchInput" placeholder="Search" class="w-full font-openSans border-none outline-none text-lg font-normal px-4 py-2 text-white/80">
                 </div>
             </div>
         `
@@ -200,52 +240,66 @@ export const views = {
                     </form>
                 </div>
             </div>
+            <div id="searchModal" class="fixed inset-0 bg-black/20 backdrop-blur-[1px] opacity-0 pointer-events-none transition-all duration-300 flex items-start justify-center pt-40">
+                <div id="searchField" class="bg-zinc-900 w-full max-w-xl mx-4 rounded-lg overflow-hidden -translate-y-10 transition-all transform duration-300 scale-95 opacity-0 outline outline-offset-1 outline-white/50">
+                    <input type="text" id="searchInput" placeholder="Search" class="w-full font-openSans border-none outline-none text-lg font-normal px-4 py-2 text-white/80">
+                </div>
+            </div>
         `
     },
     profile: {
         content: `
             <div class="flex flex-col justify-self-center rounded-xl bg-zinc-700 min-h-60 w-full md:w-3/4 lg:w-1/2 shadow-2xl outline outline-white/10 -outline-offset-1 py-2 px-4">
-                <div class="flex flex-col items-center gap-3 mt-2">
-                    <div id="profilePicturePlaceholder" class="relative md:size-48 size-32 select-none rounded-full outline outline-white/10">
-                            <img class="size-full rounded-full object-cover" alt="Profile Picture" id='profilePictureMain'>
+                <form id='updateProfileForm' enctype='multipart/form-data' class="flex flex-col items-center gap-3 mt-2">
+                    <div id="profilePicturePlaceholder" class="relative md:size-48 size-32 select-none rounded-full outline outline-white/10 group">
+                            <img class="size-full rounded-full object-cover cursor-pointer transition-all duration-300 group-hover:scale-105" alt="Profile Picture" id='profilePictureMain'>
+
+                            <input type='file' name='profilePic' id='profilePic' accept='image/*' class='absolute inset-0 opacity-0 cursor-pointer'>
                     </div>
                     <div class="flex flex-col gap-4 w-full px-3">
                         <div class="relative flex">
-                            <input id="firstName" name="firstName" type="text" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
-                            <label for="firstName" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">First name</label>
+                            <input id="firstProfileName" name="firstName" type="text" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="firstProfileName" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">First name</label>
                         </div>
                         <div class="relative flex">
-                            <input id="lastName" name="lastName" type="text" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
-                            <label for="lastName" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Last name</label>
+                            <input id="lastProfileName" name="lastName" type="text" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="lastProfileName" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Last name</label>
                         </div>
                         <div class="relative flex">
-                            <input id="email" name="email" type="email" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
-                            <label for="email" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Email</label>
+                            <input id="profileEmail" name="email" type="email" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="profileEmail" class="absolute -top-3 z-20 bg-zinc-700 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Email</label>
                         </div>
-                        <button class="text-center rounded-lg bg-white/70 min-h-8 font-montserrat font-medium cursor-pointer select-none transition-all transform ease-in-out duration-300 hover:scale-105">Change password</button>
+                        <button id='toggleChangePasswordModal' type='button' class="text-center rounded-lg bg-white/70 min-h-8 font-montserrat font-medium cursor-pointer select-none transition-all transform ease-in-out duration-300 hover:scale-105">Change password</button>
                     </div>
                     <button id="submitProfileChanges" type="submit" class="text-center rounded-lg bg-white/95 min-h-10 w-full font-medium cursor-pointer select-none transition-all transform ease-in-out duration-300 hover:scale-105 font-montserrat">Save</button>
-                </div>
+                </form>
             </div>            
         `,
-        dynamic: ``
+        dynamic: `
+            <div id="passwordModal" class="fixed inset-0 z-50 bg-black-60 flex items-center justify-center backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none">
+                <form id="passwordField" class="block w-full max-w-lg! rounded-md bg-zinc-800 shadow-md outline outline-solid outline-white/50 outline-offset-1 transition-all duration-300 transform scale-95 opacity-0 p-5 mx-2">
+                    <div class="flex flex-col gap-4 w-full px-3">
+                        <div class="relative flex">
+                            <input id="currentPassword" name="password" type="password" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="currentPassword" class="absolute -top-3 z-20 bg-zinc-800 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">Current password</label>
+                        </div>
+                        <div class="relative flex">
+                            <input id="newPassword" name="newPassword" type="password" class="flex-1 border-none rounded-lg peer outline outline-white/40 focus:outline-white/80 min-h-8 bg-zinc-300/1 font-notoSans text-white/70 px-2 font-light focus:text-white/95 focus:outline-3 items-center w-full">
+                            <label for="newPassword" class="absolute -top-3 z-20 bg-zinc-800 text-sm text-white/70 left-3 select-none peer-focus:text-white/95 font-openSans">New password</label>
+                        </div>
+                        <button type='submit' class="text-center rounded-lg bg-white/70 min-h-8 font-montserrat font-medium cursor-pointer select-none transition-all transform ease-in-out duration-300 hover:scale-105">Change password</button>
+                    </div>
+                </form>
+            </div>
+        `
     },
     preferences: {
         content: `
-            <div class="flex flex-col justify-self-center rounded-xl bg-zinc-700 min-h-20 w-full sm:w-2/3 md:w-1/2 lg:w-1/4 shadow-2xl outline outline-white/10 -outline-offset-1 py-4 px-6 gap-4">
+            <div class="flex flex-col justify-self-center rounded-xl bg-zinc-700 min-h-10 w-full sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-2xl outline outline-white/10 -outline-offset-1 py-4 px-6 gap-4">
                 <div class="flex select-none">
-                    <span class="font-medium font-openSans text-white/95 w-full">Light theme</span>
-                    <label for="lightThemeToggle" class="relative inline-flex items-center cursor-pointer select-none">
-                        <input name="settingLightTheme" type="checkbox" id="lightThemeToggle" class="sr-only peer">
-                        <div class="w-11 h-6 bg-zinc-600 rounded-full peer outline-1 outline-white/50 transition-all duration-200 peer-checked:bg-white/75"></div>
-
-                        <div class="absolute left-1 top-1 size-4 bg-white rounded-full transition-all duration-200 peer-checked:translate-x-5 peer-checked:outline peer-checked:outline-black/25 shadow-2xl"></div>
-                    </label>
-                </div>
-                <div class="flex select-none">
-                    <span class="font-medium font-openSans text-white/95 w-full">List view</span>
-                    <label for="listToggle" class="relative inline-flex items-center cursor-pointer select-none">
-                        <input name="settingList" type="checkbox" id="listToggle" class="sr-only peer">
+                    <span class="font-medium font-openSans text-white/95 w-full">Compact view</span>
+                    <label for="compactToggle" class="relative inline-flex items-center cursor-pointer select-none">
+                        <input name="settingList" type="checkbox" id="compactToggle" class="sr-only peer">
                         <div class="w-11 h-6 bg-zinc-600 rounded-full peer outline-1 outline-white/50 transition-all duration-200 peer-checked:bg-white/75"></div>
 
                         <div class="absolute left-1 top-1 size-4 bg-white rounded-full transition-all duration-200 peer-checked:translate-x-5 peer-checked:outline peer-checked:outline-black/25 shadow-2xl"></div>

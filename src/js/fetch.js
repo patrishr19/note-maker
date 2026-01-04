@@ -1,4 +1,4 @@
-import {updateNav, renderNotes} from './ui.js';
+import {updateNav, renderNotes, syncPref} from './ui.js';
 import {reInitPage} from './init.js';
 import {BASE} from './main.js';
 import {views} from './views.js';
@@ -90,9 +90,10 @@ export function loadPage(url, pushState = true, replace = false) {
     } else if (pushState) {
         window.history.pushState({}, '',fullUrl);
     }
-    console.log(viewKey);
+    //console.log(viewKey);
     updateNav(viewKey);
     reInitPage(viewKey);
+    syncPref();
 }
 export async function fetchSingleNote(id) {
     const response = await fetch('http://localhost/note-maker/src/api/api.php', {
@@ -188,6 +189,30 @@ export async function logout() {
         },
         body: JSON.stringify({
             action: 'logout'
+        })
+    });
+    return await response.json();
+}
+
+export async function updateProfile(formData) {
+    formData.append('action', 'updateProfile');
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        body: formData
+    });
+
+    return await response.json();
+}
+
+export async function updatePassword(formData) {
+    const response = await fetch('http://localhost/note-maker/src/api/api.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action: 'updatePassword',
+            ...formData
         })
     });
     return await response.json();

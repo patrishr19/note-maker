@@ -331,7 +331,7 @@ $(document).ready(() => {
             }
         });
 
-        $('#collapsePinned').on('click', (e) => {
+        $(document).on('click', '#collapsePinned', (e) => {
             const isPinnedHidden = $('#pinnedNotes').hasClass('hidden');
 
             if (isPinnedHidden) {
@@ -341,7 +341,7 @@ $(document).ready(() => {
             }
         });
 
-        $('#collapseRecent').on('click', (e) => {
+        $(document).on('click', '#collapseRecent', (e) => {
             const isRecentHidden = $('#recentNotes').hasClass('hidden');
 
             if (isRecentHidden) {
@@ -379,14 +379,18 @@ $(document).ready(() => {
                 if (result.status === 'success') {
                     const newPin = pinned == 0 ? 1 : 0;
                     note.data('pinned', newPin);
-                    if (newPin === 1) {
+                    if (initialView === 'pinned' && newPin === 0) {
+                        note.remove();
+                    } else {
+                        if (newPin === 1) {
                         note.prependTo('#pinnedNotes');
                         note.find('svg').removeClass('fill-none').addClass('fill-white');
                         showInfo('Note pinned', 'success');
-                    } else {
-                        note.prependTo('#recentNotes');
-                        note.find('svg').removeClass('fill-white').addClass('fill-none');
-                        showInfo('Note unpinned', 'success');
+                        } else {
+                            note.prependTo('#recentNotes');
+                            note.find('svg').removeClass('fill-white').addClass('fill-none');
+                            showInfo('Note unpinned', 'success');
+                        }
                     }
                 }
             } catch (error) {

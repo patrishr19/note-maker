@@ -53,6 +53,7 @@ export const views = {
                         </div>
                     </div>
                     <button id="submitRegister" type="submit" class="text-center rounded-lg bg-white/95 min-h-10 w-full font-medium cursor-pointer select-none transition-all transform ease-in-out duration-300 hover:scale-105 font-montserrat">Register</button>
+                    <a href='/note-maker/login' data-view='login' class='nav-link text-white/60 font-light text-sm font-openSans hover:text-white transition-all'>Already registered</a>
                 </form>
             </div>
         `,
